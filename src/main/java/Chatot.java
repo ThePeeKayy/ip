@@ -16,7 +16,7 @@ public class Chatot {
 
         while (true) {
             String currentCommand = sc.nextLine();
-            if (currentCommand != "bye") {
+            if (!currentCommand.equals("bye")) {
                 echo(currentCommand);
             } else {
                 exit();
