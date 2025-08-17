@@ -13,9 +13,9 @@ public class Chatot {
             this.isDone = false;
         }
         // For mark/unmark
-        public Task(String description, boolean isDoneState) {
-            this.description = description;
-            this.isDone = !isDoneState;
+        public Task(Task chosenTask) {
+            this.description = chosenTask.description;
+            this.isDone = !chosenTask.isDone;
         }
 
         public String getDescription() {
@@ -49,9 +49,15 @@ public class Chatot {
                 exit();
                 break;
             } else if (currentCommand.equals("list")) {
-                printList(commandList);
+                printList(taskList);
+            } else if (currentCommand.startsWith("mark")) {
+                int index = Integer.parseInt(currentCommand.split(" ")[1]);
+                mark(index-1, taskList);
+            } else if (currentCommand.startsWith("unmark")) {
+                int index = Integer.parseInt(currentCommand.split(" ")[1]);
+                unmark(index-1, taskList);
             } else {
-                commandList.add(new Task(currentCommand));
+                taskList.add(new Task(currentCommand));
                 echo(currentCommand);
             }
         }
@@ -68,14 +74,34 @@ public class Chatot {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
-    public static void echo(Task inputTask) {
-        System.out.println("added: " + inputTask.getDescription());
+    public static void echo(String inputTask) {
+        System.out.println("added: " + inputTask);
     }
 
     public static void printList(ArrayList<Task> taskList) {
         for (int i = 0; i < taskList.size(); i++) {
-            System.out.println((i+1) + ". " + taskList.get(i));
+            System.out.println((i+1) + "." + taskList.get(i));
         }
+    }
+
+    public static void mark(int index, ArrayList<Task> tasks) {
+        Task selectedTask = tasks.get(index);
+        if (!selectedTask.getDone()) {
+            selectedTask = new Task(selectedTask);
+        }
+        tasks.set(index, selectedTask);
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println(selectedTask);
+    }
+
+    public static void unmark(int index, ArrayList<Task> tasks) {
+        Task selectedTask = tasks.get(index);
+        if (selectedTask.getDone()) {
+            selectedTask = new Task(selectedTask);
+        }
+        tasks.set(index, selectedTask);
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println(selectedTask);
     }
 
 }
