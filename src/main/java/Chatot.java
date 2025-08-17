@@ -31,6 +31,50 @@ public class Chatot {
         }
     }
 
+    static class Todo extends Task {
+        public Todo(String description) {
+            super(description);
+        }
+
+        @Override
+        public String toString() {
+            return "[T]" + super.toString();
+        }
+    }
+
+    static class Deadline extends Task {
+        protected String by;
+
+        public Deadline(String description, String by) {
+            super(description);
+            int index = by.indexOf("/by ");
+            this.by = by.substring(index + 4);
+        }
+
+        @Override
+        public String toString() {
+            return "[D]" + super.toString() + " (by: " + by + ")";
+        }
+    }
+
+    static class Event extends Task {
+        protected String start;
+        protected String end;
+
+        public Event(String description, String details) {
+            super(description);
+            int startIndex = details.indexOf("/start ");
+            int endIndex = details.indexOf("/end ");
+            this.start = details.substring(startIndex + 7, endIndex);
+            this.end = details.substring(endIndex + 5);
+        }
+
+        @Override
+        public String toString() {
+            return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<Task> taskList = new ArrayList<>();
