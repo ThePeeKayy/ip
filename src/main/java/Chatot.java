@@ -25,11 +25,15 @@ public class Chatot {
         public boolean getDone() {
             return isDone;
         }
+
+        public String toString() {
+            return "[" + (isDone ? "X" : " ") + "] " + description;
+        }
     }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        ArrayList<String> commandList = new ArrayList<>();
+        ArrayList<Task> taskList = new ArrayList<>();
         String logo = "  ____ |  |__ _____ _/  |_  _____/  |_ \n"
                 + "_/ ___\\|  |  \\\\__  \\\\   __\\/  _ \\   __\\\n"
                 + "\\  \\___|   Y  \\/ __ \\|  | (  <_> )  |  \n"
@@ -47,7 +51,7 @@ public class Chatot {
             } else if (currentCommand.equals("list")) {
                 printList(commandList);
             } else {
-                commandList.add(currentCommand);
+                commandList.add(new Task(currentCommand));
                 echo(currentCommand);
             }
         }
@@ -64,13 +68,13 @@ public class Chatot {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
-    public static void echo(String inputCommand) {
-        System.out.println("added: " + inputCommand);
+    public static void echo(Task inputTask) {
+        System.out.println("added: " + inputTask.getDescription());
     }
 
-    public static void printList(ArrayList<String> commandList) {
-        for (int i = 0; i < commandList.size(); i++) {
-            System.out.println((i+1) + ". " + commandList.get(i));
+    public static void printList(ArrayList<Task> taskList) {
+        for (int i = 0; i < taskList.size(); i++) {
+            System.out.println((i+1) + ". " + taskList.get(i));
         }
     }
 
