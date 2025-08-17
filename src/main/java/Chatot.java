@@ -1,15 +1,9 @@
+import java.util.Scanner;
+
 public class Chatot {
-    private final String userCommand;
-
-    public Chatot() {
-        this.userCommand = "";
-    }
-
-    public Chatot(String inputCommand) {
-        this.userCommand = inputCommand;
-    }
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         String logo = "  ____ |  |__ _____ _/  |_  _____/  |_ \n"
                 + "_/ ___\\|  |  \\\\__  \\\\   __\\/  _ \\   __\\\n"
                 + "\\  \\___|   Y  \\/ __ \\|  | (  <_> )  |  \n"
@@ -17,11 +11,20 @@ public class Chatot {
                 + "     \\/     \\/     \\/                  \n";
         System.out.println("Hello from\n" + logo);
 
-        if (userCommand.isEmpty()) {
-            greet();
+        greet();
+
+
+        while (true) {
+            String currentCommand = sc.nextLine();
+            if (currentCommand != "bye") {
+                echo(currentCommand);
+            } else {
+                exit();
+                break;
+            }
         }
 
-        exit();
+
     }
 
     public static void greet() {
@@ -32,8 +35,9 @@ public class Chatot {
     public static void exit() {
         System.out.println("Bye. Hope to see you again soon!");
     }
-//
-//    public static void echo(String inputCommand) {
-//        System.out.println(inputCommand);
-//    }
+
+    public static void echo(String inputCommand) {
+        System.out.println(inputCommand);
+    }
+
 }
