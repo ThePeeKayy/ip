@@ -40,5 +40,10 @@ public class Chatot {
         System.out.println(inputCommand);
     }
 
+    public static void printList(ArrayList<String> commandList) {
+        for (int i = 0; i < commandList.size(); i++) {
+            System.out.println("Index " + (i+1) + ". " + commandList.get(i));
+        }
+    }
 
 }
