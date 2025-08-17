@@ -13,16 +13,7 @@ public class Chatot {
 
         greet();
 
-
-        while (true) {
-            String currentCommand = sc.nextLine();
-            if (!currentCommand.equals("bye")) {
-                echo(currentCommand);
-            } else {
-                exit();
-                break;
-            }
-        }
+        exit();
 
 
     }
@@ -34,10 +25,6 @@ public class Chatot {
 
     public static void exit() {
         System.out.println("Bye. Hope to see you again soon!");
-    }
-
-    public static void echo(String inputCommand) {
-        System.out.println(inputCommand);
     }
 
 }
