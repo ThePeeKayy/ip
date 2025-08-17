@@ -1,9 +1,11 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Chatot {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        ArrayList<String> commandList = new ArrayList<>();
         String logo = "  ____ |  |__ _____ _/  |_  _____/  |_ \n"
                 + "_/ ___\\|  |  \\\\__  \\\\   __\\/  _ \\   __\\\n"
                 + "\\  \\___|   Y  \\/ __ \\|  | (  <_> )  |  \n"
@@ -13,14 +15,16 @@ public class Chatot {
 
         greet();
 
-
         while (true) {
             String currentCommand = sc.nextLine();
-            if (!currentCommand.equals("bye")) {
-                echo(currentCommand);
-            } else {
+            if (currentCommand.equals("bye")) {
                 exit();
                 break;
+            } else if (currentCommand.equals("list")) {
+                printList(commandList);
+            } else {
+                commandList.add(currentCommand);
+                echo(currentCommand);
             }
         }
 
@@ -37,12 +41,12 @@ public class Chatot {
     }
 
     public static void echo(String inputCommand) {
-        System.out.println(inputCommand);
+        System.out.println("added: " + inputCommand);
     }
 
     public static void printList(ArrayList<String> commandList) {
         for (int i = 0; i < commandList.size(); i++) {
-            System.out.println("Index " + (i+1) + ". " + commandList.get(i));
+            System.out.println((i+1) + ". " + commandList.get(i));
         }
     }
 
