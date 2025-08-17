@@ -27,4 +27,8 @@ public class Chatot {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
+    public static void echo(String inputCommand) {
+        System.out.println(inputCommand);
+    }
+
 }
