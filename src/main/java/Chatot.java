@@ -3,6 +3,30 @@ import java.util.ArrayList;
 
 public class Chatot {
 
+    static class Task {
+        private String description;
+        private boolean isDone;
+
+        // For add
+        public Task(String description) {
+            this.description = description;
+            this.isDone = false;
+        }
+        // For mark/unmark
+        public Task(String description, boolean isDoneState) {
+            this.description = description;
+            this.isDone = !isDoneState;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public boolean getDone() {
+            return isDone;
+        }
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         ArrayList<String> commandList = new ArrayList<>();
