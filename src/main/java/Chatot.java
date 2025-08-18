@@ -92,25 +92,34 @@ public class Chatot {
                 exit();
                 break;
             } else if (currentCommand.equals("list")) {
-                if (taskList.size() == 0) {
-                    System.out.println("Your list is empty!");
-                    continue;
+                try {
+                    if (taskList.size() == 0) {
+                        throw new IllegalStateException("No tasks available to remove");
+                    }
+                    printList(taskList);
+                } catch (IllegalStateException e) {
+                    System.out.println(e);
                 }
-                printList(taskList);
             } else if (currentCommand.startsWith("mark")) {
-                if (taskList.size() == 0) {
-                    System.out.println("Your list is empty!");
-                    continue;
+                try {
+                    if (taskList.size() == 0) {
+                        throw new IllegalStateException("No tasks available to remove");
+                    }
+                    int index = Integer.parseInt(currentCommand.split(" ")[1]);
+                    mark(index-1, taskList);
+                } catch (IllegalStateException e);){
+                    System.out.println(e);
                 }
-                int index = Integer.parseInt(currentCommand.split(" ")[1]);
-                mark(index-1, taskList);
             } else if (currentCommand.startsWith("unmark")) {
-                if (taskList.size() == 0) {
-                    System.out.println("Your list is empty!");
-                    continue;
+                try {
+                    if (taskList.size() == 0) {
+                        throw new IllegalStateException("No tasks available to remove");
+                    }
+                    int index = Integer.parseInt(currentCommand.split(" ")[1]);
+                    unmark(index-1, taskList);
+                } catch (IllegalStateException e);){
+                    System.out.println(e);
                 }
-                int index = Integer.parseInt(currentCommand.split(" ")[1]);
-                unmark(index-1, taskList);
             } else if (currentCommand.startsWith("todo ")) {
                 try {
                     if (currentCommand.length() <= 5) {
@@ -122,7 +131,7 @@ public class Chatot {
                     taskList.add(targetTodo);
                     System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
                 } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println("Error: Todo cannot be empty!");
+                    System.out.println(e);
                     continue;
                 }
 
@@ -188,6 +197,12 @@ public class Chatot {
                     continue;
                 } catch (IllegalArgumentException e) {
                     System.out.println("Error: " + e.getMessage());
+                    continue;
+                }
+
+            } else if (currentCommand.startsWith("delete ")) {
+                if (taskList.size() == 0) {
+                    System.out.println("Your list is empty!");
                     continue;
                 }
 
