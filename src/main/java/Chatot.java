@@ -13,9 +13,8 @@ public class Chatot {
             this.isDone = false;
         }
         // For mark/unmark
-        public Task(Task chosenTask) {
-            this.description = chosenTask.description;
-            this.isDone = !chosenTask.isDone;
+        public void switchDone() {
+            this.isDone = !this.isDone;
         }
 
         public String getDescription() {
@@ -63,15 +62,15 @@ public class Chatot {
 
         public Event(String description, String details) {
             super(description);
-            int startIndex = details.indexOf("/start ");
-            int endIndex = details.indexOf("/end ");
-            this.start = details.substring(startIndex + 7, endIndex);
-            this.end = details.substring(endIndex + 5);
+            int startIndex = details.indexOf("/from ");
+            int endIndex = details.indexOf("/to ");
+            this.start = details.substring(startIndex + 6, endIndex);
+            this.end = details.substring(endIndex + 4);
         }
 
         @Override
         public String toString() {
-            return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
+            return "[E]" + super.toString() + " (from: " + start + "to: " + end + ")";
         }
     }
 
@@ -100,6 +99,32 @@ public class Chatot {
             } else if (currentCommand.startsWith("unmark")) {
                 int index = Integer.parseInt(currentCommand.split(" ")[1]);
                 unmark(index-1, taskList);
+            } else if (currentCommand.startsWith("Todo")) {
+                String taskDesc = currentCommand.substring(5);
+                System.out.println("Got it. I've added this task:");
+                Todo targetTodo = new Todo(taskDesc);
+                taskList.add(targetTodo);
+                System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
+            } else if (currentCommand.startsWith("Deadline")) {
+                String withoutCmd = currentCommand.substring(9);
+                int detailIndex = withoutCmd.indexOf("/by ");
+                String taskDesc = withoutCmd.substring(0, detailIndex - 1);
+                String details = withoutCmd.substring(detailIndex);
+                System.out.println("Got it. I've added this task:");
+                Deadline targetDeadline = new Deadline(taskDesc, details);
+                taskList.add(targetDeadline);
+                System.out.println(targetDeadline);
+                System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
+            } else if (currentCommand.startsWith("Event")) {
+                String withoutCmd = currentCommand.substring(6);
+                int detailIndex = withoutCmd.indexOf("/from ");
+                String taskDesc = withoutCmd.substring(0, detailIndex - 1);
+                String details = withoutCmd.substring(detailIndex);
+                System.out.println("Got it. I've added this task:");
+                Event targetEvent= new Event(taskDesc, details);
+                taskList.add(targetEvent);
+                System.out.println(targetEvent);
+                System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
             } else {
                 taskList.add(new Task(currentCommand));
                 echo(currentCommand);
@@ -131,7 +156,7 @@ public class Chatot {
     public static void mark(int index, ArrayList<Task> tasks) {
         Task selectedTask = tasks.get(index);
         if (!selectedTask.getDone()) {
-            selectedTask = new Task(selectedTask);
+            selectedTask.switchDone();
         }
         tasks.set(index, selectedTask);
         System.out.println("Nice! I've marked this task as done:");
@@ -141,7 +166,7 @@ public class Chatot {
     public static void unmark(int index, ArrayList<Task> tasks) {
         Task selectedTask = tasks.get(index);
         if (selectedTask.getDone()) {
-            selectedTask = new Task(selectedTask);
+            selectedTask.switchDone();
         }
         tasks.set(index, selectedTask);
         System.out.println("OK, I've marked this task as not done yet:");
