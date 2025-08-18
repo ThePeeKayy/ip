@@ -200,12 +200,6 @@ public class Chatot {
                     continue;
                 }
 
-            } else if (currentCommand.startsWith("delete ")) {
-                if (taskList.size() == 0) {
-                    System.out.println("Your list is empty!");
-                    continue;
-                }
-
             } else {
                 System.out.println("Sorry! Your command is not recognised! ");
             }
