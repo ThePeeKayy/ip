@@ -200,8 +200,24 @@ public class Chatot {
                     continue;
                 }
 
+            } else if (currentCommand.startsWith("delete ")) {
+                try {
+                    if (currentCommand.length() == 7) {
+                        throw new IllegalArgumentException("No index selected");
+                    }
+                    int selectedIndex = Integer.parseInt(currentCommand.substring(7));
+                    if (selectedIndex > taskList.size()) {
+                        throw new IllegalArgumentException("Selected index exceeds list length");
+                    }
+
+                    Task removedTask = taskList.remove(selectedIndex-1);
+                    System.out.println("Noted. I've removed this task:\n" + removedTask + "\n" + "Now you have " + taskList.size() + " tasks in the list.\n");
+                } catch (Exception e) {
+                    System.out.println(e);
+                    continue;
+                }
             } else {
-                System.out.println("Sorry! Your command is not recognised! ");
+                System.out.println("Command not recognised! Check out our user guide!");
             }
         }
 
