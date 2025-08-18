@@ -107,7 +107,7 @@ public class Chatot {
                     }
                     int index = Integer.parseInt(currentCommand.split(" ")[1]);
                     mark(index-1, taskList);
-                } catch (IllegalStateException e);){
+                } catch (IllegalStateException e){
                     System.out.println(e);
                 }
             } else if (currentCommand.startsWith("unmark")) {
@@ -117,7 +117,7 @@ public class Chatot {
                     }
                     int index = Integer.parseInt(currentCommand.split(" ")[1]);
                     unmark(index-1, taskList);
-                } catch (IllegalStateException e);){
+                } catch (IllegalStateException e){
                     System.out.println(e);
                 }
             } else if (currentCommand.startsWith("todo ")) {
