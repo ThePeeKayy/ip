@@ -92,22 +92,58 @@ public class Chatot {
                 exit();
                 break;
             } else if (currentCommand.equals("list")) {
+                if (taskList.size() == 0) {
+                    System.out.println("Your list is empty!");
+                    continue;
+                }
                 printList(taskList);
             } else if (currentCommand.startsWith("mark")) {
+                if (taskList.size() == 0) {
+                    System.out.println("Your list is empty!");
+                    continue;
+                }
                 int index = Integer.parseInt(currentCommand.split(" ")[1]);
                 mark(index-1, taskList);
             } else if (currentCommand.startsWith("unmark")) {
+                if (taskList.size() == 0) {
+                    System.out.println("Your list is empty!");
+                    continue;
+                }
                 int index = Integer.parseInt(currentCommand.split(" ")[1]);
                 unmark(index-1, taskList);
-            } else if (currentCommand.startsWith("todo")) {
+            } else if (currentCommand.startsWith("todo ")) {
+                try {
+                    if (currentCommand.length() <= 5) {
+                        throw new StringIndexOutOfBoundsException("Task too short");
+                    }
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Error: Todo cannot be empty!");
+                    continue;
+                }
                 String taskDesc = currentCommand.substring(5);
                 System.out.println("Got it. I've added this task:");
                 Todo targetTodo = new Todo(taskDesc);
                 taskList.add(targetTodo);
                 System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
-            } else if (currentCommand.startsWith("deadline")) {
+            } else if (currentCommand.startsWith("deadline ")) {
+                try {
+                    if (currentCommand.length() <= 9) {
+                        throw new StringIndexOutOfBoundsException("Task too short");
+                    }
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Error: Deadline cannot be empty!");
+                    continue;
+                }
                 String withoutCmd = currentCommand.substring(9);
                 int detailIndex = withoutCmd.indexOf("/by ");
+                if (detailIndex == -1) {
+                    System.out.println("Error: Missing '/by' in command");
+                    continue;
+                }
+                if (detailIndex == 9) {
+                    System.out.println("Error: Missing Actual task");
+                    continue;
+                }
                 String taskDesc = withoutCmd.substring(0, detailIndex - 1);
                 String details = withoutCmd.substring(detailIndex);
                 System.out.println("Got it. I've added this task:");
@@ -115,9 +151,29 @@ public class Chatot {
                 taskList.add(targetDeadline);
                 System.out.println(targetDeadline);
                 System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
-            } else if (currentCommand.startsWith("event")) {
+            } else if (currentCommand.startsWith("event ")) {
+                try {
+                    if (currentCommand.length() <= 6) {
+                        throw new StringIndexOutOfBoundsException("Task too short");
+                    }
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Error: Event cannot be empty!");
+                    continue;
+                }
                 String withoutCmd = currentCommand.substring(6);
                 int detailIndex = withoutCmd.indexOf("/from ");
+                if (detailIndex == -1) {
+                    System.out.println("Error: Missing '/from' in command");
+                    continue;
+                }
+                if (detailIndex == 6) {
+                    System.out.println("Error: Missing Actual task");
+                    continue;
+                }
+                if (withoutCmd.indexOf("/to ") == -1) {
+                    System.out.println("Error: Missing '/to' in command");
+                    continue;
+                }
                 String taskDesc = withoutCmd.substring(0, detailIndex - 1);
                 String details = withoutCmd.substring(detailIndex);
                 System.out.println("Got it. I've added this task:");
@@ -126,8 +182,7 @@ public class Chatot {
                 System.out.println(targetEvent);
                 System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
             } else {
-                taskList.add(new Task(currentCommand));
-                echo(currentCommand);
+                System.out.println("Sorry! Your command is not recognised! ");
             }
         }
 
