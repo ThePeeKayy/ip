@@ -4,3 +4,17 @@ _/ ___\|  |  \\__  \\   __\/  _ \   __\
 \  \___|   Y  \/ __ \|  | (  <_> )  |
  \___  >___|  (____  /__|  \____/|__|
      \/     \/     \/
+Hello I'm Chatot!
+What can I do for you?
+Got it. I've added this task:
+[E][ ] Shake (from: september to: october)
+Now you have 1 tasks in the list.
+Got it. I've added this task:
+[D][ ] Finish CS2103T Homework (by: As soon as possible)
+Now you have 2 tasks in the list.
+Nice! I've marked this task as done:
+[D][X] Finish CS2103T Homework (by: As soon as possible)
+1.[E][ ] Shake (from: september to: october)
+2.[D][X] Finish CS2103T Homework (by: As soon as possible)
+bye
+Bye. Hope to see you again soon!

@@ -99,13 +99,13 @@ public class Chatot {
             } else if (currentCommand.startsWith("unmark")) {
                 int index = Integer.parseInt(currentCommand.split(" ")[1]);
                 unmark(index-1, taskList);
-            } else if (currentCommand.startsWith("Todo")) {
+            } else if (currentCommand.startsWith("todo")) {
                 String taskDesc = currentCommand.substring(5);
                 System.out.println("Got it. I've added this task:");
                 Todo targetTodo = new Todo(taskDesc);
                 taskList.add(targetTodo);
                 System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
-            } else if (currentCommand.startsWith("Deadline")) {
+            } else if (currentCommand.startsWith("deadline")) {
                 String withoutCmd = currentCommand.substring(9);
                 int detailIndex = withoutCmd.indexOf("/by ");
                 String taskDesc = withoutCmd.substring(0, detailIndex - 1);
@@ -115,7 +115,7 @@ public class Chatot {
                 taskList.add(targetDeadline);
                 System.out.println(targetDeadline);
                 System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
-            } else if (currentCommand.startsWith("Event")) {
+            } else if (currentCommand.startsWith("event")) {
                 String withoutCmd = currentCommand.substring(6);
                 int detailIndex = withoutCmd.indexOf("/from ");
                 String taskDesc = withoutCmd.substring(0, detailIndex - 1);

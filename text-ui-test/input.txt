@@ -1,0 +1,6 @@
+Event Shake /from september /to october
+Deadline Finish CS2103T Homework /by As soon as possible
+mark 2
+unmark 2
+list
+bye
