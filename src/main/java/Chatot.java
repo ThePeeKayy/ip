@@ -227,11 +227,11 @@ public class Chatot {
                 switch (line.charAt(1)) {
                     case 'E':
                         int startIndex = line.indexOf("from: ");
-                        taskList.add(new Event(line.substring(7, startIndex), line.substring(startIndex), isDone));
+                        taskList.add(new Event(line.substring(7, startIndex - 2), line.substring(startIndex - 1), isDone));
                         break;
                     case 'D':
                         int timeIndex = line.indexOf("by: ");
-                        taskList.add(new Deadline(line.substring(7, timeIndex), line.substring(timeIndex), isDone));
+                        taskList.add(new Deadline(line.substring(7, timeIndex - 2), line.substring(timeIndex + 1, line.length() - 1), isDone));
                         break;
                     case 'T':
                         taskList.add(new Todo(line.substring(7), isDone));

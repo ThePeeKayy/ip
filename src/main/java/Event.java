@@ -12,10 +12,10 @@ class Event extends Task {
 
     public Event(String description, String details, boolean isDone) {
         super(description, isDone);
-        int startIndex = details.indexOf("/from ");
-        int endIndex = details.indexOf("/to ");
+        int startIndex = details.indexOf("from: ");
+        int endIndex = details.indexOf("to: ");
         this.start = details.substring(startIndex + 6, endIndex);
-        this.end = details.substring(endIndex + 4);
+        this.end = details.substring(endIndex + 4, details.length() - 1);
     }
 
     @Override
