@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.File;
 
 public class Chatot {
 
@@ -18,7 +20,7 @@ public class Chatot {
         while (true) {
             String currentCommand = sc.nextLine();
             if (currentCommand.equals("bye")) {
-                exit();
+                exit(taskList);
                 break;
             } else if (currentCommand.equals("list")) {
                 try {
@@ -158,8 +160,21 @@ public class Chatot {
         System.out.println("What can I do for you?");
     }
 
-    public static void exit() {
+    public static void exit(ArrayList<Task> currentTasks) {
         System.out.println("Bye. Hope to see you again soon!");
+        File dataDir = new File("./data");
+
+        if (!dataDir.exists()) {
+            dataDir.mkdirs(); // handle missing folder as required
+        }
+
+        try (FileWriter writer = new FileWriter("./data/taskHistory")) {
+            for (Task task : currentTasks) {
+                writer.write(task.toString() + "\n");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public static void echo(String inputTask) {
