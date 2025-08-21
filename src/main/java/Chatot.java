@@ -162,7 +162,7 @@ public class Chatot {
 
     public static void exit(ArrayList<Task> currentTasks) {
         System.out.println("Bye. Hope to see you again soon!");
-        File dataDir = new File("./data");
+        File dataDir = new File("./data"); // for folder creation
 
         if (!dataDir.exists()) {
             dataDir.mkdirs(); // handle missing folder as required
