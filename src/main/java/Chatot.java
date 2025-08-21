@@ -16,10 +16,11 @@ public class Chatot {
         System.out.println("Hello from\n" + logo);
 
         greet();
-
+        taskList = getStoredTasks();
         while (true) {
             String currentCommand = sc.nextLine();
             if (currentCommand.equals("bye")) {
+
                 exit(taskList);
                 break;
             } else if (currentCommand.equals("list")) {
@@ -36,7 +37,11 @@ public class Chatot {
                     if (taskList.size() == 0) {
                         throw new IllegalStateException("No tasks available to remove");
                     }
+
                     int index = Integer.parseInt(currentCommand.split(" ")[1]);
+                    if (taskList.size() < index) {
+                        throw new IllegalStateException("Index out of range");
+                    }
                     mark(index-1, taskList);
                 } catch (IllegalStateException e){
                     System.out.println(e);
@@ -47,6 +52,9 @@ public class Chatot {
                         throw new IllegalStateException("No tasks available to remove");
                     }
                     int index = Integer.parseInt(currentCommand.split(" ")[1]);
+                    if (taskList.size() < index) {
+                        throw new IllegalStateException("Index out of range");
+                    }
                     unmark(index-1, taskList);
                 } catch (IllegalStateException e){
                     System.out.println(e);
@@ -150,6 +158,7 @@ public class Chatot {
             } else {
                 System.out.println("Command not recognised! Check out our user guide!");
             }
+
         }
 
 
@@ -168,7 +177,7 @@ public class Chatot {
             dataDir.mkdirs(); // handle missing folder as required
         }
 
-        try (FileWriter writer = new FileWriter("./data/taskHistory")) {
+        try (FileWriter writer = new FileWriter("./data/taskHistory.txt")) {
             for (Task task : currentTasks) {
                 writer.write(task.toString() + "\n");
             }
@@ -205,6 +214,38 @@ public class Chatot {
         tasks.set(index, selectedTask);
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println(selectedTask);
+    }
+
+    public static ArrayList<Task> getStoredTasks() {
+        try {
+            File file = new File("./data/taskHistory.txt");
+            Scanner scanner = new Scanner(file);
+            ArrayList<Task> taskList = new ArrayList<>();
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                boolean isDone = (line.charAt(4) == 'X');
+                switch (line.charAt(1)) {
+                    case 'E':
+                        int startIndex = line.indexOf("from: ");
+                        taskList.add(new Event(line.substring(7, startIndex), line.substring(startIndex), isDone));
+                        break;
+                    case 'D':
+                        int timeIndex = line.indexOf("by: ");
+                        taskList.add(new Deadline(line.substring(7, timeIndex), line.substring(timeIndex), isDone));
+                        break;
+                    case 'T':
+                        taskList.add(new Todo(line.substring(7), isDone));
+                        break;
+                }
+            }
+            scanner.close();
+
+            return taskList;
+
+        } catch (Exception e) {
+            System.out.println("No previous data retrieved");
+            return new ArrayList<>();
+        }
     }
 
 }

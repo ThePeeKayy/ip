@@ -7,6 +7,11 @@ class Task {
         this.description = description;
         this.isDone = false;
     }
+
+    public Task(String description, boolean isDone) {
+        this.description = description;
+        this.isDone = isDone;
+    }
     // For mark/unmark
     public void switchDone() {
         this.isDone = !this.isDone;
