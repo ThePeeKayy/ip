@@ -1,21 +1,29 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 class Event extends Task {
-    protected String start;
+    protected LocalDate start;
     protected String end;
 
     public Event(String description, String details) {
         super(description);
         int startIndex = details.indexOf("/from ");
         int endIndex = details.indexOf("/to ");
-        this.start = details.substring(startIndex + 6, endIndex);
-        this.end = details.substring(endIndex + 4);
+        LocalDate startDate = LocalDate.parse(details.substring(startIndex + 6, endIndex));
+        LocalDate endDate = LocalDate.parse(details.substring((endIndex + 4));
+        this.start = startDate;
+        this.end = endDate;
     }
 
     public Event(String description, String details, boolean isDone) {
         super(description, isDone);
         int startIndex = details.indexOf("from: ");
         int endIndex = details.indexOf("to: ");
-        this.start = details.substring(startIndex + 6, endIndex);
-        this.end = details.substring(endIndex + 4, details.length() - 1);
+        LocalDate startDate = LocalDate.parse(details.substring(startIndex + 6, endIndex));
+        LocalDate endDate = LocalDate.parse(details.substring((endIndex + 4), details.length() - 1);
+        this.start = startDate;
+        this.end = endDate;
     }
 
     @Override
