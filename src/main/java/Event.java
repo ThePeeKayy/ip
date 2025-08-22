@@ -10,24 +10,36 @@ class Event extends Task {
         super(description);
         int startIndex = details.indexOf("/from ");
         int endIndex = details.indexOf("/to ");
-        LocalDate startDate = LocalDate.parse(details.substring(startIndex + 6, endIndex - 1));
-        LocalDate endDate = LocalDate.parse(details.substring((endIndex + 4)));
-        this.start = startDate;
-        this.end = endDate;
+        DateTimeFormatter[] formatters = {
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+                DateTimeFormatter.ofPattern("MMM dd yyyy"),
+        };
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                this.start = LocalDate.parse(details.substring(startIndex + 6, endIndex - 1), formatter);
+                this.end = LocalDate.parse(details.substring((endIndex + 4)), formatter);
+            } catch (Exception e) {}
+        }
     }
 
     public Event(String description, String details, boolean isDone) {
         super(description, isDone);
         int startIndex = details.indexOf("from: ");
         int endIndex = details.indexOf("to: ");
-        LocalDate startDate = LocalDate.parse(details.substring(startIndex + 6, endIndex - 1));
-        LocalDate endDate = LocalDate.parse(details.substring((endIndex + 4), details.length() - 1));
-        this.start = startDate;
-        this.end = endDate;
+        DateTimeFormatter[] formatters = {
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+                DateTimeFormatter.ofPattern("MMM dd yyyy"),
+        };
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                this.start = LocalDate.parse(details.substring(startIndex + 6, endIndex - 1), formatter);
+                this.end = LocalDate.parse(details.substring((endIndex + 4), details.length() - 1), formatter);
+            } catch (Exception e) {}
+        }
     }
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + start + " to: " + end + ")";
+        return "[E]" + super.toString() + " (from: " + start.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + " to: " + end.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")";
     }
 }

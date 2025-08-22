@@ -8,17 +8,33 @@ class Deadline extends Task {
     public Deadline(String description, String by) {
         super(description);
         int index = by.indexOf("/by ");
-        this.by = LocalDate.parse(by.substring(index + 4));
+        DateTimeFormatter[] formatters = {
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+                DateTimeFormatter.ofPattern("MMM dd yyyy"),
+        };
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                this.by = LocalDate.parse(by.substring(index + 4), formatter);
+            } catch (Exception e) {}
+        }
     }
 
     public Deadline(String description, String by, boolean isDone) {
         super(description, isDone);
         int index = by.indexOf("by: ");
-        this.by = LocalDate.parse(by.substring(index + 4));
+        DateTimeFormatter[] formatters = {
+                DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+                DateTimeFormatter.ofPattern("MMM dd yyyy"),
+        };
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                this.by = LocalDate.parse(by.substring(index + 4), formatter);
+            } catch (Exception e) {}
+        }
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+        return "[D]" + super.toString() + " (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ")";
     }
 }
