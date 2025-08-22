@@ -1,251 +1,182 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.File;
-
 public class Chatot {
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
+
+    public Chatot(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        try {
+            tasks = new TaskList(storage.load());
+        } catch (Exception e) {
+            ui.showLoadingError();
+            tasks = new TaskList();
+        }
+    }
+
+    public void run() {
+        ui.showWelcome();
+
+        while (true) {
+            String currentCommand = ui.readCommand();
+            Command command = Parser.parse(currentCommand);
+
+            switch (command.getType()) {
+                case BYE:
+                    storage.save(tasks.getTasks());
+                    ui.showGoodbye();
+                    return;
+
+                case LIST:
+                    try {
+                        if (tasks.size() == 0) {
+                            throw new IllegalStateException("No tasks available to remove");
+                        }
+                        ui.showTaskList(tasks);
+                    } catch (IllegalStateException e) {
+                        ui.showError(e);
+                    }
+                    break;
+
+                case MARK:
+                    try {
+                        if (tasks.size() == 0) {
+                            throw new IllegalStateException("No tasks available to remove");
+                        }
+                        int index = Integer.parseInt(command.getArguments());
+                        if (tasks.size() < index) {
+                            throw new IllegalStateException("Index out of range");
+                        }
+                        tasks.markTask(index - 1);
+                        ui.showTaskMarked(tasks.get(index - 1));
+                    } catch (IllegalStateException e) {
+                        ui.showError(e);
+                    }
+                    break;
+
+                case UNMARK:
+                    try {
+                        if (tasks.size() == 0) {
+                            throw new IllegalStateException("No tasks available to remove");
+                        }
+                        int index = Integer.parseInt(command.getArguments());
+                        if (tasks.size() < index) {
+                            throw new IllegalStateException("Index out of range");
+                        }
+                        tasks.unmarkTask(index - 1);
+                        ui.showTaskUnmarked(tasks.get(index - 1));
+                    } catch (IllegalStateException e) {
+                        ui.showError(e);
+                    }
+                    break;
+
+                case TODO:
+                    try {
+                        String arguments = command.getArguments();
+                        if (arguments.isEmpty()) {
+                            throw new StringIndexOutOfBoundsException("Task too short");
+                        }
+                        Todo targetTodo = new Todo(arguments);
+                        tasks.addTask(targetTodo);
+                        ui.showTaskAdded(targetTodo, tasks.size());
+                    } catch (StringIndexOutOfBoundsException e) {
+                        ui.showError(e);
+                    }
+                    break;
+
+                case DEADLINE:
+                    try {
+                        String arguments = command.getArguments();
+                        if (arguments.isEmpty()) {
+                            throw new IllegalArgumentException("Deadline cannot be empty!");
+                        }
+
+                        int detailIndex = arguments.indexOf("/by ");
+
+                        if (detailIndex == -1) {
+                            throw new IllegalArgumentException("Missing '/by' in command");
+                        }
+
+                        if (detailIndex == 0) {
+                            throw new IllegalArgumentException("Missing actual task");
+                        }
+
+                        String taskDesc = arguments.substring(0, detailIndex).trim();
+                        String details = arguments.substring(detailIndex).trim();
+
+                        if (taskDesc.isEmpty()) {
+                            throw new IllegalArgumentException("Task description cannot be empty");
+                        }
+                        if (details.isEmpty()) {
+                            throw new IllegalArgumentException("Deadline details cannot be empty");
+                        }
+
+                        Deadline targetDeadline = new Deadline(taskDesc, details);
+                        tasks.addTask(targetDeadline);
+                        ui.showTaskAdded(targetDeadline, tasks.size());
+                    } catch (IllegalArgumentException e) {
+                        ui.showErrorMessage(e.getMessage());
+                    }
+                    break;
+
+                case EVENT:
+                    try {
+                        String arguments = command.getArguments();
+                        if (arguments.isEmpty()) {
+                            throw new StringIndexOutOfBoundsException("Task too short");
+                        }
+
+                        int detailIndex = arguments.indexOf("/from ");
+                        if (detailIndex == -1) {
+                            throw new IllegalArgumentException("Event needs /from");
+                        }
+                        if (detailIndex == 0) {
+                            throw new IllegalArgumentException("Actual task missing");
+                        }
+                        if (arguments.indexOf("/to ") == -1) {
+                            throw new IllegalArgumentException("Event needs /to");
+                        }
+
+                        String taskDesc = arguments.substring(0, detailIndex - 1);
+                        String details = arguments.substring(detailIndex);
+
+                        Event targetEvent = new Event(taskDesc, details);
+                        tasks.addTask(targetEvent);
+                        ui.showTaskAdded(targetEvent, tasks.size());
+                    } catch (StringIndexOutOfBoundsException e) {
+                        ui.showErrorMessage("Event cannot be empty!");
+                    } catch (IllegalArgumentException e) {
+                        ui.showErrorMessage(e.getMessage());
+                    }
+                    break;
+
+                case DELETE:
+                    try {
+                        String arguments = command.getArguments();
+                        if (arguments.isEmpty()) {
+                            throw new IllegalArgumentException("No index selected");
+                        }
+                        int selectedIndex = Integer.parseInt(arguments);
+                        if (selectedIndex > tasks.size()) {
+                            throw new IllegalArgumentException("Selected index exceeds list length");
+                        }
+
+                        Task removedTask = tasks.deleteTask(selectedIndex - 1);
+                        ui.showTaskRemoved(removedTask, tasks.size());
+                    } catch (Exception e) {
+                        ui.showError(e);
+                    }
+                    break;
+
+                case UNKNOWN:
+                default:
+                    ui.showCommandNotRecognised();
+                    break;
+            }
+        }
+    }
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        ArrayList<Task> taskList = new ArrayList<>();
-        String logo = "  ____ |  |__ _____ _/  |_  _____/  |_ \n"
-                + "_/ ___\\|  |  \\\\__  \\\\   __\\/  _ \\   __\\\n"
-                + "\\  \\___|   Y  \\/ __ \\|  | (  <_> )  |  \n"
-                + " \\___  >___|  (____  /__|  \\____/|__|  \n"
-                + "     \\/     \\/     \\/                  \n";
-        System.out.println("Hello from\n" + logo);
-
-        greet();
-        taskList = getStoredTasks();
-        while (true) {
-            String currentCommand = sc.nextLine();
-            if (currentCommand.equals("bye")) {
-
-                exit(taskList);
-                break;
-            } else if (currentCommand.equals("list")) {
-                try {
-                    if (taskList.size() == 0) {
-                        throw new IllegalStateException("No tasks available to remove");
-                    }
-                    printList(taskList);
-                } catch (IllegalStateException e) {
-                    System.out.println(e);
-                }
-            } else if (currentCommand.startsWith("mark")) {
-                try {
-                    if (taskList.size() == 0) {
-                        throw new IllegalStateException("No tasks available to remove");
-                    }
-
-                    int index = Integer.parseInt(currentCommand.split(" ")[1]);
-                    if (taskList.size() < index) {
-                        throw new IllegalStateException("Index out of range");
-                    }
-                    mark(index-1, taskList);
-                } catch (IllegalStateException e){
-                    System.out.println(e);
-                }
-            } else if (currentCommand.startsWith("unmark")) {
-                try {
-                    if (taskList.size() == 0) {
-                        throw new IllegalStateException("No tasks available to remove");
-                    }
-                    int index = Integer.parseInt(currentCommand.split(" ")[1]);
-                    if (taskList.size() < index) {
-                        throw new IllegalStateException("Index out of range");
-                    }
-                    unmark(index-1, taskList);
-                } catch (IllegalStateException e){
-                    System.out.println(e);
-                }
-            } else if (currentCommand.startsWith("todo ")) {
-                try {
-                    if (currentCommand.length() <= 5) {
-                        throw new StringIndexOutOfBoundsException("Task too short");
-                    }
-                    String taskDesc = currentCommand.substring(5);
-                    System.out.println("Got it. I've added this task:");
-                    Todo targetTodo = new Todo(taskDesc);
-                    taskList.add(targetTodo);
-                    System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
-                } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println(e);
-                    continue;
-                }
-
-            } else if (currentCommand.startsWith("deadline ")) {
-                try {
-                    if (currentCommand.length() <= 9) {
-                        throw new IllegalArgumentException("Deadline cannot be empty!");
-                    }
-                    String withoutCmd = currentCommand.substring(9);
-                    int detailIndex = withoutCmd.indexOf("/by ");
-
-                    if (detailIndex == -1) {
-                        throw new IllegalArgumentException("Missing '/by' in command");
-                    }
-
-                    if (detailIndex == 0) {
-                        throw new IllegalArgumentException("Missing actual task");
-                    }
-
-                    String taskDesc = withoutCmd.substring(0, detailIndex).trim();
-                    String details = withoutCmd.substring(detailIndex).trim();
-
-                    if (taskDesc.isEmpty()) {
-                        throw new IllegalArgumentException("Task description cannot be empty");
-                    }
-                    if (details.isEmpty()) {
-                        throw new IllegalArgumentException("Deadline details cannot be empty");
-                    }
-                    System.out.println("Got it. I've added this task:");
-                    Deadline targetDeadline = new Deadline(taskDesc, details);
-                    taskList.add(targetDeadline);
-                    System.out.println(targetDeadline);
-                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error: " + e.getMessage());
-                    continue;
-                }
-            } else if (currentCommand.startsWith("event ")) {
-                try {
-                    if (currentCommand.length() <= 6) {
-                        throw new StringIndexOutOfBoundsException("Task too short");
-                    }
-                    String withoutCmd = currentCommand.substring(6);
-                    int detailIndex = withoutCmd.indexOf("/from ");
-                    if (detailIndex == -1) {
-                        throw new IllegalArgumentException("Event needs /from");
-                    }
-                    if (detailIndex == 6) {
-                        throw new IllegalArgumentException("Actual task missing");
-                    }
-                    if (withoutCmd.indexOf("/to ") == -1) {
-                        throw new IllegalArgumentException("Event needs /to");
-                    }
-                    String taskDesc = withoutCmd.substring(0, detailIndex - 1);
-                    String details = withoutCmd.substring(detailIndex);
-                    System.out.println("Got it. I've added this task:");
-                    Event targetEvent= new Event(taskDesc, details);
-                    taskList.add(targetEvent);
-                    System.out.println(targetEvent);
-                    System.out.println("Now you have " + taskList.size() +  " tasks in the list.");
-                } catch (StringIndexOutOfBoundsException e) {
-                    System.out.println("Error: Event cannot be empty!");
-                    continue;
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error: " + e.getMessage());
-                    continue;
-                }
-
-            } else if (currentCommand.startsWith("delete ")) {
-                try {
-                    if (currentCommand.length() == 7) {
-                        throw new IllegalArgumentException("No index selected");
-                    }
-                    int selectedIndex = Integer.parseInt(currentCommand.substring(7));
-                    if (selectedIndex > taskList.size()) {
-                        throw new IllegalArgumentException("Selected index exceeds list length");
-                    }
-
-                    Task removedTask = taskList.remove(selectedIndex-1);
-                    System.out.println("Noted. I've removed this task:\n" + removedTask + "\n" + "Now you have " + taskList.size() + " tasks in the list.\n");
-                } catch (Exception e) {
-                    System.out.println(e);
-                    continue;
-                }
-            } else {
-                System.out.println("Command not recognised! Check out our user guide!");
-            }
-
-        }
-
-
+        new Chatot("./data/taskHistory.txt").run();
     }
-
-    public static void greet() {
-        System.out.println("Hello I'm Chatot!");
-        System.out.println("What can I do for you?");
-    }
-
-    public static void exit(ArrayList<Task> currentTasks) {
-        System.out.println("Bye. Hope to see you again soon!");
-        File dataDir = new File("./data"); // for folder creation
-
-        if (!dataDir.exists()) {
-            dataDir.mkdirs(); // handle missing folder as required
-        }
-
-        try (FileWriter writer = new FileWriter("./data/taskHistory.txt")) {
-            for (Task task : currentTasks) {
-                writer.write(task.toString() + "\n");
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    public static void echo(String inputTask) {
-        System.out.println("added: " + inputTask);
-    }
-
-    public static void printList(ArrayList<Task> taskList) {
-        for (int i = 0; i < taskList.size(); i++) {
-            System.out.println((i+1) + "." + taskList.get(i));
-        }
-    }
-
-    public static void mark(int index, ArrayList<Task> tasks) {
-        Task selectedTask = tasks.get(index);
-        if (!selectedTask.getDone()) {
-            selectedTask.switchDone();
-        }
-        tasks.set(index, selectedTask);
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(selectedTask);
-    }
-
-    public static void unmark(int index, ArrayList<Task> tasks) {
-        Task selectedTask = tasks.get(index);
-        if (selectedTask.getDone()) {
-            selectedTask.switchDone();
-        }
-        tasks.set(index, selectedTask);
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(selectedTask);
-    }
-
-    public static ArrayList<Task> getStoredTasks() {
-        try {
-            File file = new File("./data/taskHistory.txt");
-            Scanner scanner = new Scanner(file);
-            ArrayList<Task> taskList = new ArrayList<>();
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                boolean isDone = (line.charAt(4) == 'X');
-                switch (line.charAt(1)) {
-                    case 'E':
-                        int startIndex = line.indexOf("from: ");
-                        taskList.add(new Event(line.substring(7, startIndex - 2), line.substring(startIndex - 1), isDone));
-                        break;
-                    case 'D':
-                        int timeIndex = line.indexOf("by: ");
-                        taskList.add(new Deadline(line.substring(7, timeIndex - 2), line.substring(timeIndex + 1, line.length() - 1), isDone));
-                        break;
-                    case 'T':
-                        taskList.add(new Todo(line.substring(7), isDone));
-                        break;
-                }
-            }
-            scanner.close();
-
-            return taskList;
-
-        } catch (Exception e) {
-            System.out.println("No previous data retrieved");
-            return new ArrayList<>();
-        }
-    }
-
 }
