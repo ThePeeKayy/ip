@@ -1,16 +1,20 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 class Deadline extends Task {
-    protected String by;
+    protected LocalDate by;
 
     public Deadline(String description, String by) {
         super(description);
         int index = by.indexOf("/by ");
-        this.by = by.substring(index + 4);
+        this.by = LocalDate.parse(by.substring(index + 4));
     }
 
     public Deadline(String description, String by, boolean isDone) {
         super(description, isDone);
-        int index = by.indexOf("/by ");
-        this.by = by.substring(index + 4);
+        int index = by.indexOf("by: ");
+        this.by = LocalDate.parse(by.substring(index + 4));
     }
 
     @Override

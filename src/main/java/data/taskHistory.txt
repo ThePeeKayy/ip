@@ -1,1 +1,3 @@
 [T][ ] say hi
+[E][X] read book (from: 2025-10-12 to: 2026-10-10)
+[D][ ] go toilet (by: 2024-10-20)
