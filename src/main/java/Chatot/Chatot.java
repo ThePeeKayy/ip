@@ -1,3 +1,5 @@
+package chatot;
+
 public class Chatot {
     private Storage storage;
     private TaskList tasks;
@@ -30,7 +32,7 @@ public class Chatot {
                 case LIST:
                     try {
                         if (tasks.size() == 0) {
-                            throw new IllegalStateException("No tasks available to remove");
+                            throw new IllegalStateException("No tasks available");
                         }
                         ui.showTaskList(tasks);
                     } catch (IllegalStateException e) {

@@ -1,3 +1,5 @@
+package chatot;
+
 import java.util.Scanner;
 
 public class Ui {
