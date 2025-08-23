@@ -2,6 +2,9 @@ package chatot;
 
 import java.util.Scanner;
 
+/**
+ * Handles user interface interactions.
+ */
 public class Ui {
     private Scanner scanner;
 

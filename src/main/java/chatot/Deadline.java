@@ -3,10 +3,16 @@ package chatot;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-
+/**
+ * Represents a deadline with a due date.
+ */
 public class Deadline extends Task {
     protected LocalDate by;
-
+    /**
+     * Creates a new deadline object/instance. Mainly used for all functions besides extracting saved data.
+     * @param description the task description
+     * @param by the string containing the due date with "/by " prefix
+     */
     public Deadline(String description, String by) {
         super(description);
         int index = by.indexOf("/by ");
@@ -24,6 +30,12 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Creates a deadline object. Mainly for loading saved data.
+     * @param description the task description
+     * @param by the string containing the due date with "by: " prefix
+     * @param isDone whether the task is completed
+     */
     public Deadline(String description, String by, boolean isDone) {
         super(description, isDone);
         int index = by.indexOf("by: ");

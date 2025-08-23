@@ -1,7 +1,15 @@
 package chatot;
 
+/**
+ * Handles parsing of user inputs.
+ */
 public class Parser {
 
+    /**
+     * Comprehensive switch that handles all possible commands.
+     * @param fullCommand the complete user input string
+     * @return Command object with appropriate type and arguments
+     */
     public static Command parse(String fullCommand) {
         String[] commandParts = fullCommand.split(" ", 2);
         String commandWord = commandParts[0];
@@ -34,10 +42,16 @@ enum CommandType {
     BYE, LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, UNKNOWN
 }
 
+/**
+ * Represents a singular user command.
+ */
 class Command {
     private CommandType type;
     private String arguments;
-
+    /**
+     * Creates a command with only type and no arguments.
+     * @param type the command type
+     */
     public Command(CommandType type) {
         this.type = type;
         this.arguments = "";
@@ -47,11 +61,18 @@ class Command {
         this.type = type;
         this.arguments = arguments;
     }
-
+    /**
+     * Simple getter for the command type.
+     * @return the command type
+     */
     public CommandType getType() {
         return type;
     }
 
+    /**
+     * Simple getter for the command arguments.
+     * @return the command arguments
+     */
     public String getArguments() {
         return arguments;
     }

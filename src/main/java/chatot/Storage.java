@@ -5,13 +5,25 @@ import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * Handles text file interaction for basic storage.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Creates a storage handler with the specified file path.
+     * @param filePath path to the storage file
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from toString() tasks.
+     * @return list of task objects
+     * @throws Exception if file reading fails
+     */
     public ArrayList<Task> load() throws Exception {
         File file = new File(filePath);
         Scanner scanner = new Scanner(file);
@@ -38,6 +50,10 @@ public class Storage {
         return taskList;
     }
 
+    /**
+     * Saves the task list as a textfile.
+     * @param tasks list of existing tasks
+     */
     public void save(ArrayList<Task> tasks) {
         File dataDir = new File("./data");
 
