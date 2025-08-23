@@ -32,10 +32,18 @@ public class TaskList {
     }
 
     /**
-     * Removes and returns a task at the specified index.
-     * @param index the index of the task to delete
-     * @return the deleted task
+     * Returns TaskList based on keyword.
+     * @param taskName the string of task to find
+     * @return the new TaskList filtered object
      */
+    public TaskList findTask(String taskName) {
+        ArrayList<Task> filtered = new ArrayList<>();
+        this.tasks.stream()
+                .filter(task -> task.getDescription().contains(taskName))
+                .forEach(task -> filtered.add(task));
+        return new TaskList(filtered);
+    }
+
     public Task deleteTask(int index) {
         return tasks.remove(index);
     }

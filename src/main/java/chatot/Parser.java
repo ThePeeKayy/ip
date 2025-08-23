@@ -32,48 +32,12 @@ public class Parser {
                 return new Command(CommandType.EVENT, arguments);
             case "delete":
                 return new Command(CommandType.DELETE, arguments);
+            case "find":
+                return new Command(CommandType.FIND, arguments);
             default:
                 return new Command(CommandType.UNKNOWN);
         }
     }
 }
 
-enum CommandType {
-    BYE, LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, UNKNOWN
-}
 
-/**
- * Represents a singular user command.
- */
-class Command {
-    private CommandType type;
-    private String arguments;
-    /**
-     * Creates a command with only type and no arguments.
-     * @param type the command type
-     */
-    public Command(CommandType type) {
-        this.type = type;
-        this.arguments = "";
-    }
-
-    public Command(CommandType type, String arguments) {
-        this.type = type;
-        this.arguments = arguments;
-    }
-    /**
-     * Simple getter for the command type.
-     * @return the command type
-     */
-    public CommandType getType() {
-        return type;
-    }
-
-    /**
-     * Simple getter for the command arguments.
-     * @return the command arguments
-     */
-    public String getArguments() {
-        return arguments;
-    }
-}

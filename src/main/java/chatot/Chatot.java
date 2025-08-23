@@ -170,6 +170,22 @@ public class Chatot {
                     }
                     break;
 
+                case FIND:
+                    try {
+                        String arguments = command.getArguments();
+                        if (arguments.isEmpty()) {
+                            throw new IllegalArgumentException("No index selected");
+                        }
+                        TaskList filteredTasks = tasks.findTask(arguments);
+                        if (tasks.getSize() == 0) {
+                            throw new IllegalStateException("No tasks match your keyword");
+                        }
+                        ui.showTaskList(filteredTasks);
+                    } catch (IllegalStateException e) {
+                        ui.showError(e);
+                    }
+                    break;
+
                 case UNKNOWN:
                 default:
                     ui.showCommandNotRecognised();
