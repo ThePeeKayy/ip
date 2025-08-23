@@ -41,7 +41,7 @@ public class TaskList {
         tasks.set(index, selectedTask);
     }
 
-    public int size() {
+    public int getSize() {
         return tasks.size();
     }
 
