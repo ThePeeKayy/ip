@@ -60,7 +60,7 @@ public class Ui {
     }
 
     public void showTaskList(TaskList taskList) {
-        for (int i = 0; i < taskList.size(); i++) {
+        for (int i = 0; i < taskList.getSize(); i++) {
             System.out.println((i+1) + "." + taskList.get(i));
         }
     }

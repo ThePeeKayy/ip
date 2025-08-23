@@ -31,7 +31,7 @@ public class Chatot {
 
                 case LIST:
                     try {
-                        if (tasks.size() == 0) {
+                        if (tasks.getSize() == 0) {
                             throw new IllegalStateException("No tasks available");
                         }
                         ui.showTaskList(tasks);
@@ -42,11 +42,11 @@ public class Chatot {
 
                 case MARK:
                     try {
-                        if (tasks.size() == 0) {
+                        if (tasks.getSize() == 0) {
                             throw new IllegalStateException("No tasks available to remove");
                         }
                         int index = Integer.parseInt(command.getArguments());
-                        if (tasks.size() < index) {
+                        if (tasks.getSize() < index) {
                             throw new IllegalStateException("Index out of range");
                         }
                         tasks.markTask(index - 1);
@@ -58,11 +58,11 @@ public class Chatot {
 
                 case UNMARK:
                     try {
-                        if (tasks.size() == 0) {
+                        if (tasks.getSize() == 0) {
                             throw new IllegalStateException("No tasks available to remove");
                         }
                         int index = Integer.parseInt(command.getArguments());
-                        if (tasks.size() < index) {
+                        if (tasks.getSize() < index) {
                             throw new IllegalStateException("Index out of range");
                         }
                         tasks.unmarkTask(index - 1);
@@ -80,7 +80,7 @@ public class Chatot {
                         }
                         Todo targetTodo = new Todo(arguments);
                         tasks.addTask(targetTodo);
-                        ui.showTaskAdded(targetTodo, tasks.size());
+                        ui.showTaskAdded(targetTodo, tasks.getSize());
                     } catch (StringIndexOutOfBoundsException e) {
                         ui.showError(e);
                     }
@@ -115,7 +115,7 @@ public class Chatot {
 
                         Deadline targetDeadline = new Deadline(taskDesc, details);
                         tasks.addTask(targetDeadline);
-                        ui.showTaskAdded(targetDeadline, tasks.size());
+                        ui.showTaskAdded(targetDeadline, tasks.getSize());
                     } catch (IllegalArgumentException e) {
                         ui.showErrorMessage(e.getMessage());
                     }
@@ -144,7 +144,7 @@ public class Chatot {
 
                         Event targetEvent = new Event(taskDesc, details);
                         tasks.addTask(targetEvent);
-                        ui.showTaskAdded(targetEvent, tasks.size());
+                        ui.showTaskAdded(targetEvent, tasks.getSize());
                     } catch (StringIndexOutOfBoundsException e) {
                         ui.showErrorMessage("Event cannot be empty!");
                     } catch (IllegalArgumentException e) {
@@ -159,12 +159,12 @@ public class Chatot {
                             throw new IllegalArgumentException("No index selected");
                         }
                         int selectedIndex = Integer.parseInt(arguments);
-                        if (selectedIndex > tasks.size()) {
+                        if (selectedIndex > tasks.getSize()) {
                             throw new IllegalArgumentException("Selected index exceeds list length");
                         }
 
                         Task removedTask = tasks.deleteTask(selectedIndex - 1);
-                        ui.showTaskRemoved(removedTask, tasks.size());
+                        ui.showTaskRemoved(removedTask, tasks.getSize());
                     } catch (Exception e) {
                         ui.showError(e);
                     }
