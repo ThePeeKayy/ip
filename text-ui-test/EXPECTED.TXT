@@ -5,7 +5,7 @@ _/ ___\|  |  \\__  \\   __\/  _ \   __\
  \___  >___|  (____  /__|  \____/|__|
      \/     \/     \/
 
-Hello I'm Chatot!
+Hello I'm chatot!
 What can I do for you?
 Got it. I've added this task:
 [E][ ] Shake (from: september to: october)

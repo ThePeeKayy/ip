@@ -1,4 +1,4 @@
-# Chatot User Guide
+# chatot User Guide
 
 // Update the title above to match the actual product name
 
