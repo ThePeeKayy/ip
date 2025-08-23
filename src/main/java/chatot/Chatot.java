@@ -43,7 +43,7 @@ public class Chatot {
                 case MARK:
                     try {
                         if (tasks.size() == 0) {
-                            throw new IllegalStateException("No tasks available to remove");
+                            throw new IllegalStateException("No tasks available to mark");
                         }
                         int index = Integer.parseInt(command.getArguments());
                         if (tasks.size() < index) {
@@ -59,7 +59,7 @@ public class Chatot {
                 case UNMARK:
                     try {
                         if (tasks.size() == 0) {
-                            throw new IllegalStateException("No tasks available to remove");
+                            throw new IllegalStateException("No tasks available to unmark");
                         }
                         int index = Integer.parseInt(command.getArguments());
                         if (tasks.size() < index) {
@@ -166,6 +166,22 @@ public class Chatot {
                         Task removedTask = tasks.deleteTask(selectedIndex - 1);
                         ui.showTaskRemoved(removedTask, tasks.size());
                     } catch (Exception e) {
+                        ui.showError(e);
+                    }
+                    break;
+
+                case FIND:
+                    try {
+                        String arguments = command.getArguments();
+                        if (arguments.isEmpty()) {
+                            throw new IllegalArgumentException("No index selected");
+                        }
+                        TaskList filteredTasks = tasks.findTask(arguments);
+                        if (tasks.size() == 0) {
+                            throw new IllegalStateException("No tasks match your keyword");
+                        }
+                        ui.showTaskList(filteredTasks);
+                    } catch (IllegalStateException e) {
                         ui.showError(e);
                     }
                     break;

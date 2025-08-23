@@ -17,6 +17,14 @@ public class TaskList {
         tasks.add(task);
     }
 
+    public TaskList findTask(String taskName) {
+        ArrayList<Task> filtered = new ArrayList<>();
+        this.tasks.stream()
+                .filter(task -> task.getDescription().contains(taskName))
+                .forEach(task -> filtered.add(task));
+        return new TaskList(filtered);
+    }
+
     public Task deleteTask(int index) {
         return tasks.remove(index);
     }

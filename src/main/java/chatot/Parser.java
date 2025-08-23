@@ -24,35 +24,12 @@ public class Parser {
                 return new Command(CommandType.EVENT, arguments);
             case "delete":
                 return new Command(CommandType.DELETE, arguments);
+            case "find":
+                return new Command(CommandType.FIND, arguments);
             default:
                 return new Command(CommandType.UNKNOWN);
         }
     }
 }
 
-enum CommandType {
-    BYE, LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, UNKNOWN
-}
 
-class Command {
-    private CommandType type;
-    private String arguments;
-
-    public Command(CommandType type) {
-        this.type = type;
-        this.arguments = "";
-    }
-
-    public Command(CommandType type, String arguments) {
-        this.type = type;
-        this.arguments = arguments;
-    }
-
-    public CommandType getType() {
-        return type;
-    }
-
-    public String getArguments() {
-        return arguments;
-    }
-}
