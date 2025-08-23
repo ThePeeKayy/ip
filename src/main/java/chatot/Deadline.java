@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-class Deadline extends Task {
+public class Deadline extends Task {
     protected LocalDate by;
 
     public Deadline(String description, String by) {
@@ -14,9 +14,12 @@ class Deadline extends Task {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"),
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
+
+        String dateStr = by.substring(index + 4);
         for (DateTimeFormatter formatter : formatters) {
             try {
-                this.by = LocalDate.parse(by.substring(index + 4), formatter);
+                this.by = LocalDate.parse(dateStr, formatter);
+                break;
             } catch (Exception e) {}
         }
     }
@@ -28,9 +31,12 @@ class Deadline extends Task {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"),
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
+
+        String dateStr = by.substring(index + 4);
         for (DateTimeFormatter formatter : formatters) {
             try {
-                this.by = LocalDate.parse(by.substring(index + 4), formatter);
+                this.by = LocalDate.parse(dateStr, formatter);
+                break;
             } catch (Exception e) {}
         }
     }

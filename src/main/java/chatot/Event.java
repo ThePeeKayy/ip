@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-class Event extends Task {
+public class Event extends Task {
     protected LocalDate start;
     protected LocalDate end;
 
@@ -16,10 +16,20 @@ class Event extends Task {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"),
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
+
+        String startDateStr = details.substring(startIndex + 6, endIndex - 1);
         for (DateTimeFormatter formatter : formatters) {
             try {
-                this.start = LocalDate.parse(details.substring(startIndex + 6, endIndex - 1), formatter);
-                this.end = LocalDate.parse(details.substring((endIndex + 4)), formatter);
+                this.start = LocalDate.parse(startDateStr, formatter);
+                break;
+            } catch (Exception e) {}
+        }
+
+        String endDateStr = details.substring((endIndex + 4));
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                this.end = LocalDate.parse(endDateStr, formatter);
+                break;
             } catch (Exception e) {}
         }
     }
@@ -32,10 +42,20 @@ class Event extends Task {
                 DateTimeFormatter.ofPattern("yyyy-MM-dd"),
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
+
+        String startDateStr = details.substring(startIndex + 6, endIndex - 1);
         for (DateTimeFormatter formatter : formatters) {
             try {
-                this.start = LocalDate.parse(details.substring(startIndex + 6, endIndex - 1), formatter);
-                this.end = LocalDate.parse(details.substring((endIndex + 4), details.length() - 1), formatter);
+                this.start = LocalDate.parse(startDateStr, formatter);
+                break;
+            } catch (Exception e) {}
+        }
+
+        String endDateStr = details.substring((endIndex + 4), details.length() - 1);
+        for (DateTimeFormatter formatter : formatters) {
+            try {
+                this.end = LocalDate.parse(endDateStr, formatter);
+                break;
             } catch (Exception e) {}
         }
     }
