@@ -40,7 +40,7 @@ public class TaskListTest {
     public void testDeleteTaskReturnsCorrectTask() {
         Task deleted = taskList.deleteTask(0);
         assertEquals("Task 1", deleted.getDescription());
-        assertEquals(1, taskList.size());
+        assertEquals(1, taskList.getSize());
         assertEquals("Task 2", taskList.get(0).getDescription());
     }
 
