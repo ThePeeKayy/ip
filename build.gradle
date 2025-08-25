@@ -2,10 +2,16 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = '17.0.7'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics', 'javafx.base']
 }
 
 dependencies {
@@ -15,10 +21,8 @@ dependencies {
 
 test {
     useJUnitPlatform()
-
     testLogging {
         events "passed", "skipped", "failed"
-
         showExceptions true
         exceptionFormat "full"
         showCauses true
@@ -28,7 +32,7 @@ test {
 }
 
 application {
-    mainClass.set("chatot.Chatot")
+    mainClass.set("chatot.Launcher")
 }
 
 shadowJar {
@@ -36,6 +40,6 @@ shadowJar {
     archiveClassifier = null
 }
 
-run{
+run {
     standardInput = System.in
 }
