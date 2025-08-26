@@ -12,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 
 public class Main extends Application {
-    private static final String DEFAULT_FILE_PATH = "chatot/example.txt";
-
     private ScrollPane scrollPane;
     private VBox dialogContainer;
     private TextField userInput;
@@ -22,13 +20,15 @@ public class Main extends Application {
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.png"));
     private Image botImage = new Image(this.getClass().getResourceAsStream("/images/chatot.png"));
-
-//    public Main() {
-//        this(DEFAULT_FILE_PATH);
-//    }
+    private Chatot chatot = new Chatot();
 
     private void handleUserInput() {
-        dialogContainer.getChildren().addAll(new DialogBox(userInput.getText(), userImage));
+        String userText = userInput.getText();
+        String chatotText = chatot.run(userInput.getText());
+        dialogContainer.getChildren().addAll(
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getChatotDialog(chatotText, botImage)
+        );
         userInput.clear();
     }
 
@@ -40,6 +40,10 @@ public class Main extends Application {
 
         userInput = new TextField();
         sendButton = new Button("Send");
+
+        dialogContainer.getChildren().addAll(
+                new DialogBox(chatot.run(), botImage)
+        );
 
         sendButton.setOnMouseClicked((event) -> {
             handleUserInput();

@@ -7,46 +7,42 @@ public class Chatot {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
-    private static final String DEFAULT_FILE_PATH = "chatot/example.txt";
+    private static final String DEFAULT_FILE_PATH = "./data/taskHistory.txt";
 
 
-    public Chatot(String filePath) {
+    public Chatot() {
         ui = new Ui();
-        storage = new Storage(filePath);
+        storage = new Storage(DEFAULT_FILE_PATH);
         try {
             tasks = new TaskList(storage.load());
         } catch (Exception e) {
-            ui.showLoadingError();
+            System.out.println("Creating new chat history...");
             tasks = new TaskList();
         }
     }
 
+    public String run() {
+        return ui.showWelcome();
+    }
 
+    public String run(String userInput) {
 
+        Command command = Parser.parse(userInput);
 
-    public void run() {
-        ui.showWelcome();
-
-        while (true) {
-            String currentCommand = ui.readCommand();
-            Command command = Parser.parse(currentCommand);
-
-            switch (command.getType()) {
+        switch (command.getType()) {
                 case BYE:
                     storage.save(tasks.getTasks());
-                    ui.showGoodbye();
-                    return;
+                    return ui.showGoodbye();
 
                 case LIST:
                     try {
                         if (tasks.getSize() == 0) {
                             throw new IllegalStateException("No tasks available");
                         }
-                        ui.showTaskList(tasks);
+                        return ui.showTaskList(tasks);
                     } catch (IllegalStateException e) {
-                        ui.showError(e);
+                        return ui.showError(e);
                     }
-                    break;
 
                 case MARK:
                     try {
@@ -58,11 +54,10 @@ public class Chatot {
                             throw new IllegalStateException("Index out of range");
                         }
                         tasks.markTask(index - 1);
-                        ui.showTaskMarked(tasks.get(index - 1));
+                        return ui.showTaskMarked(tasks.get(index - 1));
                     } catch (IllegalStateException e) {
-                        ui.showError(e);
+                        return ui.showError(e);
                     }
-                    break;
 
                 case UNMARK:
                     try {
@@ -74,11 +69,10 @@ public class Chatot {
                             throw new IllegalStateException("Index out of range");
                         }
                         tasks.unmarkTask(index - 1);
-                        ui.showTaskUnmarked(tasks.get(index - 1));
+                        return ui.showTaskUnmarked(tasks.get(index - 1));
                     } catch (IllegalStateException e) {
-                        ui.showError(e);
+                        return ui.showError(e);
                     }
-                    break;
 
                 case TODO:
                     try {
@@ -88,11 +82,10 @@ public class Chatot {
                         }
                         Todo targetTodo = new Todo(arguments);
                         tasks.addTask(targetTodo);
-                        ui.showTaskAdded(targetTodo, tasks.getSize());
+                        return ui.showTaskAdded(targetTodo, tasks.getSize());
                     } catch (StringIndexOutOfBoundsException e) {
-                        ui.showError(e);
+                        return ui.showError(e);
                     }
-                    break;
 
                 case DEADLINE:
                     try {
@@ -123,11 +116,10 @@ public class Chatot {
 
                         Deadline targetDeadline = new Deadline(taskDesc, details);
                         tasks.addTask(targetDeadline);
-                        ui.showTaskAdded(targetDeadline, tasks.getSize());
+                        return ui.showTaskAdded(targetDeadline, tasks.getSize());
                     } catch (IllegalArgumentException e) {
-                        ui.showErrorMessage(e.getMessage());
+                        return ui.showErrorMessage(e.getMessage());
                     }
-                    break;
 
                 case EVENT:
                     try {
@@ -152,13 +144,12 @@ public class Chatot {
 
                         Event targetEvent = new Event(taskDesc, details);
                         tasks.addTask(targetEvent);
-                        ui.showTaskAdded(targetEvent, tasks.getSize());
+                        return ui.showTaskAdded(targetEvent, tasks.getSize());
                     } catch (StringIndexOutOfBoundsException e) {
-                        ui.showErrorMessage("Event cannot be empty!");
+                        return ui.showErrorMessage("Event cannot be empty!");
                     } catch (IllegalArgumentException e) {
-                        ui.showErrorMessage(e.getMessage());
+                        return ui.showErrorMessage(e.getMessage());
                     }
-                    break;
 
                 case DELETE:
                     try {
@@ -172,11 +163,10 @@ public class Chatot {
                         }
 
                         Task removedTask = tasks.deleteTask(selectedIndex - 1);
-                        ui.showTaskRemoved(removedTask, tasks.getSize());
+                        return ui.showTaskRemoved(removedTask, tasks.getSize());
                     } catch (Exception e) {
-                        ui.showError(e);
+                        return ui.showError(e);
                     }
-                    break;
 
                 case FIND:
                     try {
@@ -188,22 +178,17 @@ public class Chatot {
                         if (tasks.getSize() == 0) {
                             throw new IllegalStateException("No tasks match your keyword");
                         }
-                        ui.showTaskList(filteredTasks);
+                        return ui.showTaskList(filteredTasks);
                     } catch (IllegalStateException e) {
-                        ui.showError(e);
+                        return ui.showError(e);
                     }
-                    break;
 
                 case UNKNOWN:
                 default:
-                    ui.showCommandNotRecognised();
-                    break;
-            }
+                    return ui.showCommandNotRecognised();
         }
-
     }
 
-    public static void main(String[] args) {
-        new Chatot("./data/taskHistory.txt").run();
-    }
+
+
 }
