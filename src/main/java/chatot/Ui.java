@@ -13,12 +13,7 @@ public class Ui {
     }
 
     public String showWelcome() {
-        String logo = "  ____ |  |__ _____ _/  |_  _____/  |_ \n"
-                + "_/ ___\\|  |  \\\\__  \\\\   __\\/  _ \\   __\\\n"
-                + "\\  \\___|   Y  \\/ __ \\|  | (  <_> )  |  \n"
-                + " \\___  >___|  (____  /__|  \\____/|__|  \n"
-                + "     \\/     \\/     \\/                  \n";
-        return "Hello from\n" + logo + "Hello I'm Chatot! \n" + "What can I do for you?";
+        return "Hello I'm Chatot! \n" + "What can I do for you?";
     }
 
     public String readCommand() {
