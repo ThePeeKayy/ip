@@ -1,8 +1,5 @@
 package chatot;
 
-
-
-
 public class Chatot {
     private Storage storage;
     private TaskList tasks;
