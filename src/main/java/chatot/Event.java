@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Represents an event with start and end dates.
  */
-public class Event extends Task {
+class Event extends Task {
     protected LocalDate start;
     protected LocalDate end;
 

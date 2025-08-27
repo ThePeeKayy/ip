@@ -4,9 +4,9 @@ enum CommandType {
     BYE, LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, UNKNOWN, FIND
 }
 
-public class Command {
-    private CommandType type;
-    private String arguments;
+class Command {
+    private final CommandType type;
+    private final String arguments;
 
     public Command(CommandType type) {
         this.type = type;

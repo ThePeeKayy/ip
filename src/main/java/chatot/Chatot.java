@@ -1,20 +1,20 @@
 package chatot;
 
-public class Chatot {
-    private Storage storage;
-    private TaskList tasks;
-    private Ui ui;
+class Chatot {
+    private chatot.Storage storage;
+    private chatot.TaskList tasks;
+    private chatot.Ui ui;
     private static final String DEFAULT_FILE_PATH = "./data/taskHistory.txt";
 
 
     public Chatot() {
-        ui = new Ui();
-        storage = new Storage(DEFAULT_FILE_PATH);
+        ui = new chatot.Ui();
+        storage = new chatot.Storage(DEFAULT_FILE_PATH);
         try {
-            tasks = new TaskList(storage.load());
+            tasks = new chatot.TaskList(storage.load());
         } catch (Exception e) {
             System.out.println("Creating new chat history...");
-            tasks = new TaskList();
+            tasks = new chatot.TaskList();
         }
     }
 
@@ -24,7 +24,7 @@ public class Chatot {
 
     public String run(String userInput) {
 
-        Command command = Parser.parse(userInput);
+        chatot.Command command = Parser.parse(userInput);
 
         switch (command.getType()) {
                 case BYE:
@@ -77,7 +77,7 @@ public class Chatot {
                         if (arguments.isEmpty()) {
                             throw new StringIndexOutOfBoundsException("Task too short");
                         }
-                        Todo targetTodo = new Todo(arguments);
+                        chatot.Todo targetTodo = new chatot.Todo(arguments);
                         tasks.addTask(targetTodo);
                         return ui.showTaskAdded(targetTodo, tasks.getSize());
                     } catch (StringIndexOutOfBoundsException e) {
@@ -111,7 +111,7 @@ public class Chatot {
                             throw new IllegalArgumentException("Deadline details cannot be empty");
                         }
 
-                        Deadline targetDeadline = new Deadline(taskDesc, details);
+                        chatot.Deadline targetDeadline = new chatot.Deadline(taskDesc, details);
                         tasks.addTask(targetDeadline);
                         return ui.showTaskAdded(targetDeadline, tasks.getSize());
                     } catch (IllegalArgumentException e) {
@@ -139,7 +139,7 @@ public class Chatot {
                         String taskDesc = arguments.substring(0, detailIndex - 1);
                         String details = arguments.substring(detailIndex);
 
-                        Event targetEvent = new Event(taskDesc, details);
+                        chatot.Event targetEvent = new chatot.Event(taskDesc, details);
                         tasks.addTask(targetEvent);
                         return ui.showTaskAdded(targetEvent, tasks.getSize());
                     } catch (StringIndexOutOfBoundsException e) {
@@ -159,7 +159,7 @@ public class Chatot {
                             throw new IllegalArgumentException("Selected index exceeds list length");
                         }
 
-                        Task removedTask = tasks.deleteTask(selectedIndex - 1);
+                        chatot.Task removedTask = tasks.deleteTask(selectedIndex - 1);
                         return ui.showTaskRemoved(removedTask, tasks.getSize());
                     } catch (Exception e) {
                         return ui.showError(e);
@@ -171,7 +171,7 @@ public class Chatot {
                         if (arguments.isEmpty()) {
                             throw new IllegalArgumentException("No index selected");
                         }
-                        TaskList filteredTasks = tasks.findTask(arguments);
+                        chatot.TaskList filteredTasks = tasks.findTask(arguments);
                         if (tasks.getSize() == 0) {
                             throw new IllegalStateException("No tasks match your keyword");
                         }

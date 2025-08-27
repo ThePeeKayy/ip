@@ -1,9 +1,8 @@
 package chatot;
-
 /**
  * Represents a basic task.
  */
-public class Task {
+class Task {
     private String description;
     private boolean isDone;
 
@@ -41,6 +40,7 @@ public class Task {
         return isDone;
     }
 
+    @Override
     public String toString() {
         return "[" + (isDone ? "X" : " ") + "] " + description;
     }

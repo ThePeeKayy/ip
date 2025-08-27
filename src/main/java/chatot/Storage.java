@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Handles text file interaction for basic storage.
  */
-public class Storage {
+class Storage {
     private String filePath;
 
     /**
@@ -24,10 +24,10 @@ public class Storage {
      * @return list of task objects
      * @throws Exception if file reading fails
      */
-    public ArrayList<Task> load() throws Exception {
+    public ArrayList<chatot.Task> load() throws Exception {
         File file = new File(filePath);
         Scanner scanner = new Scanner(file);
-        ArrayList<Task> taskList = new ArrayList<>();
+        ArrayList<chatot.Task> taskList = new ArrayList<>();
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
@@ -54,7 +54,7 @@ public class Storage {
      * Saves the task list as a textfile.
      * @param tasks list of existing tasks
      */
-    public void save(ArrayList<Task> tasks) {
+    public void save(ArrayList<chatot.Task> tasks) {
         File dataDir = new File("./data");
 
         if (!dataDir.exists()) {
@@ -62,7 +62,7 @@ public class Storage {
         }
 
         try (FileWriter writer = new FileWriter(filePath)) {
-            for (Task task : tasks) {
+            for (chatot.Task task : tasks) {
                 writer.write(task.toString() + "\n");
             }
         } catch (Exception e) {

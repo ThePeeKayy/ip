@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /**
  * List object storing tasks.
  */
-public class TaskList {
-    private ArrayList<Task> tasks;
+class TaskList {
+    private ArrayList<chatot.Task> tasks;
 
     /**
      * Initialises an empty task list.
@@ -19,7 +19,7 @@ public class TaskList {
      * Creates a task list given existing tasks.
      * @param tasks the given list of tasks
      */
-    public TaskList(ArrayList<Task> tasks) {
+    public TaskList(ArrayList<chatot.Task> tasks) {
         this.tasks = tasks;
     }
 
@@ -27,7 +27,7 @@ public class TaskList {
      * Adds a new Task object.
      * @param task the Task Object to add.
      */
-    public void addTask(Task task) {
+    public void addTask(chatot.Task task) {
         tasks.add(task);
     }
 

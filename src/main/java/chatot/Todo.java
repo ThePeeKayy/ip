@@ -3,7 +3,7 @@ package chatot;
 /**
  * Represents a simple task. No time attributes.
  */
-public class Todo extends Task {
+class Todo extends Task {
     /**
      * Creates a new Todo object.
      * @param description the task description

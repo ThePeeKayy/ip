@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Handles user interface interactions.
  */
-public class Ui {
+class Ui {
     private Scanner scanner;
 
     public Ui() {

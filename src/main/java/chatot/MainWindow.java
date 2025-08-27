@@ -18,7 +18,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     private Button sendButton;
 
-    private Chatot chatot;
+    private chatot.Chatot chatotInstance;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/images/user.jpg"));
     private Image botImage = new Image(this.getClass().getResourceAsStream("/images/chatot.png"));
@@ -26,20 +26,20 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-        chatot = new Chatot();
+        chatotInstance = new chatot.Chatot();
         dialogContainer.getChildren().addAll(
-                DialogBox.getChatotDialog(chatot.run(), botImage)
+                DialogBox.getChatotDialog(chatotInstance.run(), botImage)
         );
     }
 
-    public void setChatot(Chatot c) {
-        chatot = c;
+    public void setChatot(chatot.Chatot c) {
+        chatotInstance = c;
     }
 
     @FXML
     private void handleUserInput() {
         String userText = userInput.getText();
-        String chatotText = chatot.run(userInput.getText());
+        String chatotText = chatotInstance.run(userInput.getText());
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userText, userImage),
                 DialogBox.getChatotDialog(chatotText, botImage)

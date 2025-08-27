@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private Chatot c = new Chatot();
+    private final chatot.Chatot chatotInstance = new chatot.Chatot();
 
     @Override
     public void start(Stage stage) {
@@ -24,7 +24,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
-            fxmlLoader.<MainWindow>getController().setChatot(c);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setChatot(chatotInstance);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

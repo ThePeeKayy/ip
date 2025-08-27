@@ -6,7 +6,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * Represents a deadline with a due date.
  */
-public class Deadline extends Task {
+class Deadline extends Task {
     protected LocalDate by;
     /**
      * Creates a new deadline object/instance. Mainly used for all functions besides extracting saved data.
