@@ -34,6 +34,10 @@ public class Parser {
                 return new Command(CommandType.DELETE, arguments);
             case "find":
                 return new Command(CommandType.FIND, arguments);
+            case "update":
+                return new Command(CommandType.UPDATE, arguments);
+            case "cancel":
+                return new Command(CommandType.CANCELUPDATE, arguments);
             default:
                 return new Command(CommandType.UNKNOWN);
         }

@@ -16,10 +16,6 @@ class Ui {
         return "Hello I'm Chatot! \n" + "What can I do for you?";
     }
 
-    public String readCommand() {
-        return scanner.nextLine();
-    }
-
     public String showGoodbye() {
         return "Bye. Hope to see you again soon!";
     }
@@ -48,6 +44,10 @@ class Ui {
 
     public String showTaskUnmarked(Task task) {
         return "OK, I've marked this task as not done yet:\n" + task + "\n";
+    }
+
+    public String showTaskUpdated(Task task) {
+        return "Amazing, I've edited this task:\n" + task + "\n";
     }
 
     public String showTaskList(TaskList taskList) {

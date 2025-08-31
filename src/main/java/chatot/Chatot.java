@@ -4,6 +4,7 @@ class Chatot {
     private chatot.Storage storage;
     private chatot.TaskList tasks;
     private chatot.Ui ui;
+    private int updateTargetIndex = -1;
     private static final int INDEX_OFFSET = 1;
     private static final String DEFAULT_FILE_PATH = "./data/taskHistory.txt";
 
@@ -20,6 +21,7 @@ class Chatot {
     }
 
     private String handleByeCommand() {
+        updateTargetIndex = -1;
         storage.save(tasks.getTasks());
         return ui.showGoodbye();
     }
@@ -67,13 +69,18 @@ class Chatot {
         }
     }
 
-    private String handleTodoCommand(Command command) {
+    private String handleTodoCommand(Command command, boolean isUpdating) {
         try {
             String arguments = command.getArguments();
             if (arguments.isEmpty()) {
                 throw new StringIndexOutOfBoundsException("Task too short");
             }
             chatot.Todo targetTodo = new chatot.Todo(arguments);
+            if (isUpdating) {
+                tasks.updateTask(updateTargetIndex, targetTodo);
+                updateTargetIndex = -1;
+                return ui.showTaskUpdated(targetTodo);
+            }
             tasks.addTask(targetTodo);
             return ui.showTaskAdded(targetTodo, tasks.getSize());
         } catch (StringIndexOutOfBoundsException e) {
@@ -81,7 +88,7 @@ class Chatot {
         }
     }
 
-    private String handleDeadlineCommand(Command command) {
+    private String handleDeadlineCommand(Command command, boolean isUpdating) {
         try {
             String arguments = command.getArguments();
             if (arguments.isEmpty()) {
@@ -109,6 +116,11 @@ class Chatot {
             }
 
             chatot.Deadline targetDeadline = new chatot.Deadline(taskDesc, details);
+            if (isUpdating) {
+                tasks.updateTask(updateTargetIndex, targetDeadline);
+                updateTargetIndex = -1;
+                return ui.showTaskUpdated(targetDeadline);
+            }
             tasks.addTask(targetDeadline);
             return ui.showTaskAdded(targetDeadline, tasks.getSize());
         } catch (IllegalArgumentException e) {
@@ -116,7 +128,7 @@ class Chatot {
         }
     }
 
-    private String handleEventCommand(Command command) {
+    private String handleEventCommand(Command command, boolean isUpdating) {
         try {
             String arguments = command.getArguments();
             if (arguments.isEmpty()) {
@@ -138,6 +150,11 @@ class Chatot {
             String details = arguments.substring(detailIndex);
 
             chatot.Event targetEvent = new chatot.Event(taskDesc, details);
+            if (isUpdating) {
+                tasks.updateTask(updateTargetIndex, targetEvent);
+                updateTargetIndex = -1;
+                return ui.showTaskUpdated(targetEvent);
+            }
             tasks.addTask(targetEvent);
             return ui.showTaskAdded(targetEvent, tasks.getSize());
         } catch (StringIndexOutOfBoundsException e) {
@@ -181,6 +198,55 @@ class Chatot {
         }
     }
 
+    private String handleUpdateCommand(Command command) {
+        try {
+            String arguments = command.getArguments();
+            if (arguments.isEmpty()) {
+                throw new IllegalArgumentException("No index selected");
+            }
+            int targetIndex = Integer.parseInt(arguments);
+
+            if (targetIndex < 1 || targetIndex > tasks.getSize()) {
+                throw new IllegalArgumentException("Index out of range");
+            }
+
+            int inputIndex= targetIndex - INDEX_OFFSET;
+            updateTargetIndex = Math.max(inputIndex, 0);
+            return  "Please enter the new task (todo/deadline/event):\n" + "Please enter cancel to exit updating";
+
+        } catch (Exception e) {
+            return ui.showError(e);
+        }
+    }
+
+    private String handleCancelUpdateCommand() {
+        try {
+            updateTargetIndex = -1;
+            return  "Updating cancelled. Please enter a new command.";
+        } catch (Exception e) {
+            return ui.showError(e);
+        }
+    }
+
+    private String handleUpdateReplacement(String userInput) {
+        try {
+            Command command = Parser.parse(userInput);
+            boolean isUpdating = true;
+            switch (command.getType()) {
+                case TODO: return handleTodoCommand(command, isUpdating);
+                case DEADLINE: return handleDeadlineCommand(command, isUpdating);
+                case EVENT: return handleEventCommand(command, isUpdating);
+                case CANCELUPDATE: return handleCancelUpdateCommand();
+                case BYE: return handleByeCommand();
+                default:
+                    return "Please enter only todo, deadline, or event commands\n" + "Type cancel to cancel updating";
+            }
+
+        } catch (Exception e) {
+            updateTargetIndex = -1;
+            return ui.showError(e);
+        }
+    }
 
     public String run() {
         return ui.showWelcome();
@@ -188,24 +254,29 @@ class Chatot {
 
     public String run(String userInput) {
         assert userInput != null : "User input should not be null";
+
+        if (updateTargetIndex != -1) {
+            return handleUpdateReplacement(userInput);
+        }
+
         Command command = Parser.parse(userInput);
         return executeCommand(command);
     }
 
     private String executeCommand(Command command) {
+        boolean isUpdating = false;
         switch (command.getType()) {
             case BYE: return handleByeCommand();
             case LIST: return handleListCommand();
             case MARK: return handleMarkCommand(command);
             case UNMARK: return handleUnmarkCommand(command);
-            case TODO: return handleTodoCommand(command);
-            case DEADLINE: return handleDeadlineCommand(command);
-            case EVENT: return handleEventCommand(command);
+            case TODO: return handleTodoCommand(command, isUpdating);
+            case DEADLINE: return handleDeadlineCommand(command, isUpdating);
+            case EVENT: return handleEventCommand(command, isUpdating);
             case DELETE: return handleDeleteCommand(command);
             case FIND: return handleFindCommand(command);
+            case UPDATE: return handleUpdateCommand(command);
             default: return ui.showCommandNotRecognised();
         }
     }
-
-
 }

@@ -77,6 +77,11 @@ class TaskList {
         tasks.set(index, selectedTask);
     }
 
+    public void updateTask(int index, Task updatedTask) {
+        assert index >= 0 && index < tasks.size() : "Edit index should not lie outside size";
+        tasks.set(index, updatedTask);
+    }
+
     public int getSize() {
         return tasks.size();
     }
