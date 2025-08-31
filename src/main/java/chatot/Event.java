@@ -40,6 +40,8 @@ class Event extends Task {
                 break;
             } catch (Exception e) {}
         }
+        assert this.start != null && this.end != null : "Time cannot be null";
+        assert !this.start.isAfter(this.end) : "Start date cannot be after end date";
     }
 
     /**

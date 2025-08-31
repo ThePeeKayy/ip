@@ -28,6 +28,7 @@ class Deadline extends Task {
                 break;
             } catch (Exception e) {}
         }
+        assert this.by != null : "Deadline end date should not be null";
     }
 
     /**
