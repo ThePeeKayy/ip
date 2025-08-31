@@ -187,6 +187,7 @@ class Chatot {
     }
 
     public String run(String userInput) {
+        assert userInput != null : "User input should not be null";
         Command command = Parser.parse(userInput);
         return executeCommand(command);
     }
@@ -208,6 +209,3 @@ class Chatot {
 
 
 }
-
-
-

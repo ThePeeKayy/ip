@@ -28,6 +28,7 @@ class TaskList {
      * @param task the Task Object to add.
      */
     public void addTask(chatot.Task task) {
+        assert task != null : "Task should not be null";
         tasks.add(task);
     }
 
@@ -45,6 +46,7 @@ class TaskList {
     }
 
     public Task deleteTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Delete should not lie outside size";
         return tasks.remove(index);
     }
 
@@ -58,6 +60,7 @@ class TaskList {
     }
 
     public void markTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Mark task should not lie outside size";
         Task selectedTask = tasks.get(index);
         if (!selectedTask.getDone()) {
             selectedTask.switchDone();
@@ -66,6 +69,7 @@ class TaskList {
     }
 
     public void unmarkTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Unmark should not lie outside size";
         Task selectedTask = tasks.get(index);
         if (selectedTask.getDone()) {
             selectedTask.switchDone();

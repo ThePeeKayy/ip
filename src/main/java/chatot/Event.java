@@ -46,6 +46,8 @@ class Event extends Task {
                 System.out.println("Could not parse date");
             }
         }
+        assert this.start != null && this.end != null : "Time cannot be null";
+        assert !this.start.isAfter(this.end) : "Start date cannot be after end date";
     }
 
     /**
