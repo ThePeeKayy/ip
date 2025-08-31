@@ -11,6 +11,7 @@ class Task {
      * @param description the task description in string
      */
     public Task(String description) {
+        assert description != null : "Task description cannot be null";
         this.description = description;
         this.isDone = false;
     }
@@ -21,6 +22,7 @@ class Task {
      * @param isDone whether the task is completed
      */
     public Task(String description, boolean isDone) {
+        assert description != null : "Task description cannot be null";
         this.description = description;
         this.isDone = isDone;
     }

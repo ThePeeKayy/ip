@@ -23,7 +23,7 @@ class Chatot {
     }
 
     public String run(String userInput) {
-
+        assert userInput != null : "User input should not be null";
         chatot.Command command = Parser.parse(userInput);
 
         switch (command.getType()) {
