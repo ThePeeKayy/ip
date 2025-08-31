@@ -8,6 +8,8 @@ import java.time.temporal.ChronoUnit;
  */
 class Deadline extends Task {
     protected LocalDate by;
+    private static final int PREFIX_LENGTH = 4;
+
     /**
      * Creates a new deadline object/instance. Mainly used for all functions besides extracting saved data.
      * @param description the task description
@@ -21,7 +23,7 @@ class Deadline extends Task {
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
 
-        String dateStr = by.substring(index + 4);
+        String dateStr = by.substring(index + PREFIX_LENGTH);
         for (DateTimeFormatter formatter : formatters) {
             try {
                 this.by = LocalDate.parse(dateStr, formatter);
@@ -45,12 +47,14 @@ class Deadline extends Task {
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
 
-        String dateStr = by.substring(index + 4);
+        String dateStr = by.substring(index + PREFIX_LENGTH);
         for (DateTimeFormatter formatter : formatters) {
             try {
                 this.by = LocalDate.parse(dateStr, formatter);
                 break;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Could not parse date");
+            }
         }
     }
 

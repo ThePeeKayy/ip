@@ -10,6 +10,8 @@ import java.time.temporal.ChronoUnit;
 class Event extends Task {
     protected LocalDate start;
     protected LocalDate end;
+    private static final int FROM_PREFIX_LENGTH = 6;
+    private static final int TO_PREFIX_LENGTH = 4;
 
     /**
      * Creates a new event with description and date range. Main constructor used by all functions except loading saved data
@@ -25,20 +27,24 @@ class Event extends Task {
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
 
-        String startDateStr = details.substring(startIndex + 6, endIndex - 1);
+        String startDateStr = details.substring(startIndex + FROM_PREFIX_LENGTH, endIndex - 1);
         for (DateTimeFormatter formatter : formatters) {
             try {
                 this.start = LocalDate.parse(startDateStr, formatter);
                 break;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Could not parse date");
+            }
         }
 
-        String endDateStr = details.substring((endIndex + 4));
+        String endDateStr = details.substring((endIndex + TO_PREFIX_LENGTH));
         for (DateTimeFormatter formatter : formatters) {
             try {
                 this.end = LocalDate.parse(endDateStr, formatter);
                 break;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Could not parse date");
+            }
         }
         assert this.start != null && this.end != null : "Time cannot be null";
         assert !this.start.isAfter(this.end) : "Start date cannot be after end date";
@@ -59,20 +65,24 @@ class Event extends Task {
                 DateTimeFormatter.ofPattern("MMM dd yyyy"),
         };
 
-        String startDateStr = details.substring(startIndex + 6, endIndex - 1);
+        String startDateStr = details.substring(startIndex + FROM_PREFIX_LENGTH, endIndex - 1);
         for (DateTimeFormatter formatter : formatters) {
             try {
                 this.start = LocalDate.parse(startDateStr, formatter);
                 break;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Could not parse date");
+            }
         }
 
-        String endDateStr = details.substring((endIndex + 4), details.length() - 1);
+        String endDateStr = details.substring((endIndex + TO_PREFIX_LENGTH), details.length() - 1);
         for (DateTimeFormatter formatter : formatters) {
             try {
                 this.end = LocalDate.parse(endDateStr, formatter);
                 break;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Could not parse date");
+            }
         }
     }
 

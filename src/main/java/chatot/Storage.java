@@ -9,6 +9,10 @@ import java.util.ArrayList;
  * Handles text file interaction for basic storage.
  */
 class Storage {
+    private static final int TASK_DONE_POSITION = 4;
+    private static final int TASK_TYPE_POSITION = 1;
+    private static final int TASK_DESC_POSITION = 7;
+    private static final int TASK_TIME_WHITESPACE_LENGTH = 2;
     private String filePath;
 
     /**
@@ -31,18 +35,20 @@ class Storage {
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();
-            boolean isDone = (line.charAt(4) == 'X');
-            switch (line.charAt(1)) {
+            boolean isDone = (line.charAt(TASK_DONE_POSITION) == 'X');
+            switch (line.charAt(TASK_TYPE_POSITION)) {
                 case 'E':
                     int startIndex = line.indexOf("from: ");
-                    taskList.add(new Event(line.substring(7, startIndex - 2), line.substring(startIndex - 1), isDone));
+                    taskList.add(new Event(line.substring(TASK_DESC_POSITION, startIndex - TASK_TIME_WHITESPACE_LENGTH), line.substring(startIndex - 1), isDone));
                     break;
                 case 'D':
                     int timeIndex = line.indexOf("by: ");
-                    taskList.add(new Deadline(line.substring(7, timeIndex - 2), line.substring(timeIndex + 1, line.length() - 1), isDone));
+                    taskList.add(new Deadline(line.substring(TASK_DESC_POSITION, timeIndex - TASK_TIME_WHITESPACE_LENGTH), line.substring(timeIndex + 1, line.length() - 1), isDone));
                     break;
                 case 'T':
-                    taskList.add(new Todo(line.substring(7), isDone));
+                    taskList.add(new Todo(line.substring(TASK_DESC_POSITION), isDone));
+                    break;
+                default:
                     break;
             }
         }
