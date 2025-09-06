@@ -37,7 +37,7 @@ class Parser {
             case "update":
                 return new Command(CommandType.UPDATE, arguments);
             case "cancel":
-                return new Command(CommandType.CANCELUPDATE, arguments);
+                return new Command(CommandType.CANCEL_UPDATE, arguments);
             default:
                 return new Command(CommandType.UNKNOWN);
         }

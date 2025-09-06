@@ -236,7 +236,7 @@ class Chatot {
                 case TODO: return handleTodoCommand(command, isUpdating);
                 case DEADLINE: return handleDeadlineCommand(command, isUpdating);
                 case EVENT: return handleEventCommand(command, isUpdating);
-                case CANCELUPDATE: return handleCancelUpdateCommand();
+                case CANCEL_UPDATE: return handleCancelUpdateCommand();
                 case BYE: return handleByeCommand();
                 default:
                     return "Please enter only todo, deadline, or event commands\n" + "Type cancel to cancel updating";

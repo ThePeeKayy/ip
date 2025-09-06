@@ -45,6 +45,11 @@ class TaskList {
         return new TaskList(filtered);
     }
 
+    /**
+     * Deletes a task.
+     * @param index which is the index of the task to delete
+     * @return the deleted task
+     */
     public Task deleteTask(int index) {
         assert index >= 0 && index < tasks.size() : "Delete should not lie outside size";
         return tasks.remove(index);
@@ -59,6 +64,10 @@ class TaskList {
         return tasks.get(index);
     }
 
+    /**
+     * Marks a task.
+     * @param index which is the index of the task to mark
+     */
     public void markTask(int index) {
         assert index >= 0 && index < tasks.size() : "Mark task should not lie outside size";
         Task selectedTask = tasks.get(index);
@@ -68,6 +77,10 @@ class TaskList {
         tasks.set(index, selectedTask);
     }
 
+    /**
+     * Unmarks a task.
+     * @param index which is the index of the task to unmark
+     */
     public void unmarkTask(int index) {
         assert index >= 0 && index < tasks.size() : "Unmark should not lie outside size";
         Task selectedTask = tasks.get(index);
@@ -77,6 +90,11 @@ class TaskList {
         tasks.set(index, selectedTask);
     }
 
+    /**
+     * Updates a task.
+     * @param index which is the index of the task to update
+     * @param updatedTask which is the new updated task
+     */
     public void updateTask(int index, Task updatedTask) {
         assert index >= 0 && index < tasks.size() : "Edit index should not lie outside size";
         tasks.set(index, updatedTask);
@@ -86,6 +104,10 @@ class TaskList {
         return tasks.size();
     }
 
+    /**
+     * Gets all tasks.
+     * @return ArrayList of tasks
+     */
     public ArrayList<Task> getTasks() {
         return tasks;
     }

@@ -8,6 +8,23 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 
+/**
+ * Controller class for the main application window of Chatot.
+ * Manages the JavaFX GUI components and handles user interactions with the task management system.
+ *
+ * This class serves as the primary interface between the user and the Chatot application,
+ * displaying conversations in a chat-like format with dialog boxes for both user input
+ * and Chatot responses. It handles real-time message processing and maintains the
+ * visual conversation history.
+ *
+ * The interface includes:
+ * - A scrollable dialog container for displaying conversation history
+ * - Text input field for user commands
+ * - Send button for submitting commands
+ * - Automatic scrolling to show latest messages
+ *
+ * @author Peng Kiang
+ */
 public class MainWindow extends AnchorPane {
     @FXML
     private ScrollPane scrollPane;
