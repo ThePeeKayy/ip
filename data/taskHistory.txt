@@ -1,3 +1,3 @@
-[T][X] goodbye
-[T][X] kiss ivan
+[T][X] Have dinner with secondary school friends
+[T][X] Study for CS2040S
 [D][ ] testnew (by: Oct 03 2025)

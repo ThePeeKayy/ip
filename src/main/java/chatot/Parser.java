@@ -3,7 +3,7 @@ package chatot;
 /**
  * Handles parsing of user inputs.
  */
-public class Parser {
+class Parser {
 
     /**
      * Comprehensive switch that handles all possible commands.
