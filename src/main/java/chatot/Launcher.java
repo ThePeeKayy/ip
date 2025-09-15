@@ -16,7 +16,9 @@ import javafx.application.Application;
  */
 public class Launcher {
     /**
-     * Main method that launches the Chatot JavaFX application.
+     * Basic launcher for application.
+     *
+     * Helps resolve GUI association issues based on documentation.
      *
      * @param args command line arguments passed to the application
      */

@@ -6,7 +6,10 @@ package chatot;
 class Parser {
 
     /**
-     * Comprehensive switch that handles all possible commands.
+     * Translates string into corresponding Command objects.
+     *
+     * This class is responsible for creating the appropriate consturctors for the commands.
+     *
      * @param fullCommand the complete user input string
      * @return Command object with appropriate type and arguments
      */

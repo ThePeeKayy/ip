@@ -2,9 +2,9 @@
 
 ![Chatot Interface](Ui.png)
 
-Chatot is a personal task management application that helps you organize your todos, deadlines, and events through a simple command-line interface with a JavaFX GUI. Named after the chatty Pokémon, Chatot makes task management fun and interactive!
+Chatot is a personal CRUD software that helps keep track of your events, deadlines and todos. Chatot operates on a simple command-line interface with a JavaFX GUI. Named after the chatty Pokémon, Chatot makes task management fun and interactive!
 
-Chatot allows you to manage three types of tasks:
+The three types of tasks supported by the command line:
 - **Todos**: Simple tasks without any time constraints
 - **Deadlines**: Tasks that need to be completed by a specific date
 - **Events**: Tasks that occur during a specific time period
@@ -176,8 +176,10 @@ All tasks are automatically saved when you exit the application, ensuring your d
 The screenshot shows Chatot in action with:
 - A welcoming message from Chatot
 - A list of existing tasks including todos and deadlines
-- The update functionality being used to modify task 2
+- The update functionality being used to modify tasks
 - Real-time feedback when tasks are successfully updated
-- A clean, Pokemon-themed interface with Chatot's signature colors
+- A clean, Pokemon-themed interface over a pokeball
 
 Chatot makes task management engaging with its friendly personality and intuitive command structure!
+
+(Used AI to refine)
