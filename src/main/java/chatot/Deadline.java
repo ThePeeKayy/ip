@@ -28,7 +28,9 @@ class Deadline extends Task {
             try {
                 this.by = LocalDate.parse(dateStr, formatter);
                 break;
-            } catch (Exception e) {}
+            } catch (Exception e) {
+                System.out.println("Could not parse date");
+            }
         }
         assert this.by != null : "Deadline end date should not be null";
     }
